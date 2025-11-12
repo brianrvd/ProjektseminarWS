@@ -2,6 +2,8 @@
 
 const RandomWalkCircleElement = require('./randomwalkcircleelement')
 const ElementList = require('./elementlist')
+const Stage = require('./stage')
+const Burst = require('./burst')
 
 //----------------------
 
@@ -17,8 +19,11 @@ module.exports = class Game {
     start() {
         this.elementList = new ElementList()
         for (let i = 0; i < 60; i++) {
-            this.elementList.add(new RandomWalkCircleElement(i * 10, 150))
+            setTimeout(() => { 
+                this.elementList.add(new RandomWalkCircleElement());
+            }, 3000 * i);
         }
+        this.elementList.add(new Stage())
 
         this.timeOfLastFrame = Date.now()
         this.raf = window.requestAnimationFrame(this.tick.bind(this))
