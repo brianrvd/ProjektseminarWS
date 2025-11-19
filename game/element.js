@@ -2,9 +2,21 @@
 
 module.exports = class Element {
 
+    hasCollided = false
+
+    constructor() {
+        this.instanceId = -1
+    }
+
     action() { }
 
     draw(ctx) { }
 
-    checkCollision(element) { }
+    checkCollision() { }
+
+    onCollision() { }
+
+    setId(id) {
+        this.instanceId = id
+    }
 }
