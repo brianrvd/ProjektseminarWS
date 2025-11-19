@@ -8,6 +8,7 @@ module.exports = class ElementList extends Array {
 
     add(element) {
         this.push(element)
+        element.setId(this.length - 1) 
     }
 
     get(i) {
@@ -15,20 +16,31 @@ module.exports = class ElementList extends Array {
     }
 
     delete(i) {
-        this.splice(i, 1)
+        //this.splice(i, 1)
+        this[i] = null
     }
 
     draw(ctx) {
         for (let i = 0; i < this.length; i++) {
-            this[i].draw(ctx)
+            if(this[i] != null) {
+                this[i].draw(ctx)
+            }
         }
     }
 
     action() {
         for (let i = 0; i < this.length; i++) {
-            this[i].action()
+            if(this[i] != null) {
+                this[i].action()
+            }
         }
     }
 
-    checkCollision(element) { }
+    checkCollision() { 
+        for (let i = 0; i < this.length; i++) {
+            if(this[i] != null && !this[i].hasCollided) {
+                this[i].checkCollision()
+            }
+        }
+    }
 }
