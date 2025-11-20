@@ -3,9 +3,12 @@
 const FallingWords = require('./fallingwords')
 const Player =require('./player')
 const ElementList = require('./elementlist')
+const Stage = require('./stage')
+const Burst = require('./burst')
+const RandomWalkCircleElement = require('./randomwalkcircleelement')
+const WordInputHandler = require('./wordinputhandler')
 
 
-//----------------------
 
 module.exports = class Game {
 
@@ -19,12 +22,13 @@ module.exports = class Game {
 
     start() {
         this.elementList = new ElementList()
-        this.player=new Player(250, 600)
-        this.elementList.add(this.player)
-        for (let i = 0; i < 10; i++) {
-            this.elementList.add(new FallingWords(i * 60, 0))
+        for (let i = 0; i < 60; i++) {
+            setTimeout(() => { 
+                this.elementList.add(new RandomWalkCircleElement());
+            }, 3000 * i);
         }
-          
+        this.elementList.add(new Stage())
+
         this.timeOfLastFrame = Date.now()
         this.raf = window.requestAnimationFrame(this.tick.bind(this))
     }
