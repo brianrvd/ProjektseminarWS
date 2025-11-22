@@ -5,6 +5,7 @@ const Element = require('./element')
 module.exports = class Word extends Element {
     constructor(game, x, y, circleId, speed) {
         super()
+        this.destroyed = false 
         this.game = game
         this.circleId = circleId
         this.speed = speed
@@ -25,6 +26,7 @@ module.exports = class Word extends Element {
     action() {
         //this.x += Math.random() * 2 - 1
         this.y += this.speed
+            if (this.y > window.innerHeight - 80) this.destroyed = true
     }
 
     checkCollision() {
