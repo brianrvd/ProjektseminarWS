@@ -22,6 +22,7 @@ module.exports = class Game {
 
     start() {
         this.elementList = new ElementList()
+        this.setupInput()
         this.elementList.add(new Stage());
         for (let i = 0; i < 60; i++) {
             setTimeout(() => { 
@@ -60,6 +61,8 @@ module.exports = class Game {
         //--- check element collisions
         this.elementList.checkCollision()
 
+        this.updateUI()
+
         this.raf = window.requestAnimationFrame(this.tick.bind(this))
     }
 
@@ -71,4 +74,46 @@ module.exports = class Game {
         }
         return false
     }
+    
+
+    setupInput() {
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') this.shootToCircle()
+            else if (e.key === 'Backspace') this.currentInput = this.currentInput.slice(0, -1)
+            else if (/[a-zA-Z]/.test(e.key)) this.currentInput += e.key.toLowerCase()
+            this.updateUI()
+        })
+    }
+
+    shootToCircle() {
+        if (!this.currentInput) return
+    
+        // Finde das WORT in der elementList
+        const targetWord = this.elementList.find(el => 
+            el instanceof Word && !el.hasCollided && el.word === this.getCurrentWord()
+        )
+    
+            if (!targetWord) return
+    
+        // Die Bullet fliegt zum CIRCLE-ELEMENT (nicht zum Wort)
+        // targetWord.circleId ist die instanceId des Kreises
+        this.elementList.add(new Bullet(
+            targetWord.x,           // ZIEL X des Kreises
+            targetWord.y,           // ZIEL Y des Kreises
+            targetWord.circleId,    // Target ist der KREIS
+            this
+        ))
+        this.currentInput = ''
+    }
+
+    getCurrentWord() {
+        return this.currentInput
+    }
+
+    updateUI() {
+        const el = id => document.getElementById(id)
+        if (el('current-input')) el('current-input').textContent = this.getCurrentWord()
+        if (el('score')) el('score').textContent = this.score
+    }
+
 }
