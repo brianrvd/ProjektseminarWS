@@ -1,5 +1,6 @@
 "use strict"
 
+const Bullet = require('/bullet')
 const RandomWalkCircleElement = require('./randomwalkcircleelement')
 const ElementList = require('./elementlist')
 const Stage = require('./stage')
@@ -13,6 +14,8 @@ module.exports = class Game {
     constructor() {
         this.raf                       // request animation frame handle
         this.elementList = null
+        this.score = 0 
+        this.currentInput = ''
     }
 
     //----------------------
