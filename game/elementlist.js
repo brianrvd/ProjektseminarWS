@@ -28,10 +28,15 @@ module.exports = class ElementList extends Array {
         }
     }
 
+    
     action() {
-        for (let i = 0; i < this.length; i++) {
+        for (let i = this.length - 1; i >= 0; i--) {    
             if(this[i] != null) {
                 this[i].action()
+                // NEU: Bullet und Word cleanup
+                if (this[i].hasCollided || this[i].destroyed) {
+                    this.splice(i, 1)
+                }
             }
         }
     }
