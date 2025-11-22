@@ -1,6 +1,6 @@
 "use strict"
 
-const Bullet = require('/bullet')
+const Bullet = require('./bullet')
 const RandomWalkCircleElement = require('./randomwalkcircleelement')
 const ElementList = require('./elementlist')
 const Stage = require('./stage')
