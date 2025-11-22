@@ -1,15 +1,24 @@
 const Element = require('./element')
 
 module.exports = class Bullet extends Element {
-    constructor(startX, startY, targetId, game) {
+    constructor(targetX, targetY, targetId, game) {
         super()
-        this.x = startX
-        this.y = startY
-        this.targetId = targetId  // instanceId des CIRCLE-ELEMENTS (nicht des Worts!)
+        // Startposition: Fest, wie du willst
+        this.x = 270
+        this.y = 520
+        
+        this.targetX = targetX
+        this.targetY = targetY
+        this.targetId = targetId  // instanceId des ZIEL-Kreises
         this.game = game
         this.hasCollided = false
-        this.targetX = 0
-        this.targetY = 0
+        
+        // Richtungsvektor
+        const dx = targetX - this.x
+        const dy = targetY - this.y
+        const dist = Math.hypot(dx, dy) || 1
+        this.vx = (dx / dist) * 8
+        this.vy = (dy / dist) * 8
     }
 
     draw(ctx) {
@@ -28,39 +37,31 @@ module.exports = class Bullet extends Element {
     action() {
         if (this.hasCollided) return
         
-        // Hole aktuelle Position des Ziel-Kreises (falls er existiert)
+        // Ziel-Kreis-Position aktualisieren (er bewegt sich!)
         const target = this.game.elementList.get(this.targetId)
         if (target) {
             this.targetX = target.x
             this.targetY = target.y
             
-            // Richtungsvektor neu berechnen (verfolge bewegtes Ziel)
             const dx = this.targetX - this.x
             const dy = this.targetY - this.y
-            const dist = Math.hypot(dx, dy)
-            
-            if (dist > 1) {
-                this.vx = (dx / dist) * 8
-                this.vy = (dy / dist) * 8
-                this.x += this.vx
-                this.y += this.vy
-            }
+            const dist = Math.hypot(dx, dy) || 1
+            this.vx = (dx / dist) * 8
+            this.vy = (dy / dist) * 8
         }
+        
+        this.x += this.vx
+        this.y += this.vy
     }
 
     checkCollision() {
-        // Ziel-Kreis existiert nicht mehr (z.B. gelandet)?
         if (this.game.elementList.get(this.targetId) == null) {
             this.onCollision()
         }
-        
-        // Ziel-Kreis erreicht?
         const dist = Math.hypot(this.targetX - this.x, this.targetY - this.y)
         if (dist < 15) {
             this.onCollision()
         }
-        
-        // Außerhalb?
         if (this.x < 0 || this.x > window.innerWidth || 
             this.y < 0 || this.y > window.innerHeight) {
             this.onCollision()
@@ -72,4 +73,3 @@ module.exports = class Bullet extends Element {
         this.game.elementList.delete(this.instanceId)
     }
 }
-
