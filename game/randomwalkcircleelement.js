@@ -3,6 +3,7 @@
 const Element = require('./element')
 const Burst = require('./burst')
 const Word = require('./word')
+const Health = require('./health')
 
 module.exports = class RandomWalkCircleElement extends Element {
     constructor(game) {
@@ -10,7 +11,7 @@ module.exports = class RandomWalkCircleElement extends Element {
         this.game = game
         this.x = Math.random() * 530 + 40
         this.y = 0
-        this.speed = 0.7
+        this.speed = 0.7                    //orginal speed = 0.7; ich verändere es zum testen 
         setTimeout(() => { 
             let word = new Word(this.game, this.x, this.y, this.instanceId, this.speed)
             this.game.elementList.add(word)
@@ -44,6 +45,7 @@ module.exports = class RandomWalkCircleElement extends Element {
     onCollision() {
         this.hasCollided = true
         this.game.elementList.delete(this.instanceId);
-        this.callBurst()
+        this.callBurst() 
+        this.game.health.reduce();             
     }
 }
