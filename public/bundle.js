@@ -119,6 +119,7 @@ const ElementList = require('./elementlist')
 const Stage = require('./stage')
 const Burst = require('./burst')
 const Word = require("./word")
+const Health = require("./health")
 
 //----------------------
 
@@ -127,21 +128,25 @@ module.exports = class Game {
     constructor() {
         this.raf                       // request animation frame handle
         this.elementList = null
+        this.health = new Health();
+
     }
 
     //----------------------
 
     start() {
         this.elementList = new ElementList()
-        this.elementList.add(new Stage());
+        this.elementList.add(new Stage());  
+        this.elementList.add(this.health);
+    
         for (let i = 0; i < 60; i++) {
             setTimeout(() => { 
                 this.elementList.add(new RandomWalkCircleElement(this));
             }, 3000 * i);
         }
-
         this.timeOfLastFrame = Date.now()
         this.raf = window.requestAnimationFrame(this.tick.bind(this))
+      
     }
 
     //----------------------
@@ -149,8 +154,16 @@ module.exports = class Game {
     stop() {
         window.cancelAnimationFrame(this.raf)
         this.elementList = null
+       
     }
+    // menü nach tod einblinden 
+    gameOver() {
+    this.stop();
+    document.getElementById("mycanvas").style.display = "none";      // Canvas verstecken
+    document.getElementById("main-menu").style.display = "flex";    // Menü zeigen 
+    this.health = new Health();                                    // leben wieder zurück setzen 
 
+    }
     //----------------------
 
     tick() {
@@ -170,6 +183,12 @@ module.exports = class Game {
 
         //--- check element collisions
         this.elementList.checkCollision()
+        // Spieler tod ? 
+        if (this.health.isDead()) {
+                this.gameOver();
+             return;
+            }
+
 
         this.raf = window.requestAnimationFrame(this.tick.bind(this))
     }
@@ -184,18 +203,81 @@ module.exports = class Game {
     }
 }
 
-},{"./burst":1,"./elementlist":3,"./randomwalkcircleelement":6,"./stage":7,"./word":8}],5:[function(require,module,exports){
+},{"./burst":1,"./elementlist":3,"./health":5,"./randomwalkcircleelement":7,"./stage":8,"./word":9}],5:[function(require,module,exports){
+"use strict"
+
+const Element = require('./element')
+//const randomwalkcircleelement = require('./randomwalkcircleelement')
+
+module.exports = class Health extends Element {
+
+    constructor() {  
+        super()            
+        this.health = 3;
+        this.heart = new Image();
+        this.heart.src = 'img/heart.png';
+
+        this.loaded = false; 
+        this.heart.onload = () => {                    //ladet das bild heart
+            this.loaded = true;
+        };
+    }
+    
+
+    draw(ctx){
+        if (!this.loaded) return;                          //wenn das bild geladen ist sollte es die herzen zeichnen
+        
+        if (this.health >= 1) {
+            ctx.drawImage(this.heart, 10,10,25,25);
+        }
+        if (this.health >= 2) {
+            ctx.drawImage(this.heart, 40,10,25,25);
+        }
+        if (this.health >= 3) {
+            ctx.drawImage(this.heart, 70,10,25,25);
+        }
+    }
+
+
+
+    reduce(){
+       this.health--;
+    }
+    isDead() {
+    return this.health <= 0;
+}
+
+    /*
+      
+    update() {                                                  // Überprüft den frame ob hasCollided = true 
+        if (this.randomwalkcircleelement.hasCollided) {         
+            this.health--;
+            this.randomWalkCircleElement.hasCollided = false;  // setzt collided auf false so dass nur eine herz pro collision abgezogen wird 
+        }
+    }
+         */ 
+}
+},{"./element":2}],6:[function(require,module,exports){
 "use strict"
  
 const Game = require("./game")
 let myGame = new Game()
 myGame.start()
-},{"./game":4}],6:[function(require,module,exports){
+// beim tasten druck canvas zeigen und menü verstecken 
+const startButton = document.getElementById("start-button"); 
+startButton.onclick = () => {
+    document.getElementById("main-menu").style.display = "none"; // versteckt das main menü 
+    document.getElementById("mycanvas").style.display = "flex"; // zeigt canvas wieder auf
+    myGame.start();
+};
+
+},{"./game":4}],7:[function(require,module,exports){
 "use strict"
 
 const Element = require('./element')
 const Burst = require('./burst')
 const Word = require('./word')
+const Health = require('./health')
 
 module.exports = class RandomWalkCircleElement extends Element {
     constructor(game) {
@@ -203,7 +285,7 @@ module.exports = class RandomWalkCircleElement extends Element {
         this.game = game
         this.x = Math.random() * 530 + 40
         this.y = 0
-        this.speed = 0.7
+        this.speed = 0.7                    //orginal speed = 0.7; ich verändere es zum testen 
         setTimeout(() => { 
             let word = new Word(this.game, this.x, this.y, this.instanceId, this.speed)
             this.game.elementList.add(word)
@@ -237,10 +319,11 @@ module.exports = class RandomWalkCircleElement extends Element {
     onCollision() {
         this.hasCollided = true
         this.game.elementList.delete(this.instanceId);
-        this.callBurst()
+        this.callBurst() 
+        this.game.health.reduce();             
     }
 }
-},{"./burst":1,"./element":2,"./word":8}],7:[function(require,module,exports){
+},{"./burst":1,"./element":2,"./health":5,"./word":9}],8:[function(require,module,exports){
 "use strict"
 
 const Element = require('./element')
@@ -265,7 +348,7 @@ module.exports = class Stage extends Element {
         
     }
 }
-},{"./element":2}],8:[function(require,module,exports){
+},{"./element":2}],9:[function(require,module,exports){
 "use strict"
 
 const Element = require('./element')
@@ -306,4 +389,4 @@ module.exports = class Word extends Element {
         this.game.elementList.delete(this.instanceId);
     }
 }
-},{"./element":2}]},{},[5]);
+},{"./element":2}]},{},[6]);
