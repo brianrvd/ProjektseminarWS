@@ -6,12 +6,21 @@
     <title>TypeShooter</title>
     <link rel="stylesheet" type="text/css" href="game.css" />
 </head>
+<style>
+    body{
+             display: flex;
+            justify-content: center;
+            align-items: center;          
+            
+    }
+    
+</style>
 
 <body>
     <canvas id="mycanvas" width="600" height="700"></canvas>
     <div id= "ui"
     style = "position: absolute; top:10px ; left:10px ; color:white; font-family:Arial">
-        Score: <span id="score">0</span> | Type: <span id)"current-input"></span>
+        Score: <span id="score">0</span> | Type: <span id="current-input"></span>
     </div>
     <div id="game-wrapper">
         <!-- Alles muss im game-wrapper sein -->
