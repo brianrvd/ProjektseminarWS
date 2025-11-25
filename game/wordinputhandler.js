@@ -2,29 +2,29 @@
 
 module.exports = class WordInputHandler{
 
-    constructor(validator){
-        this.input= "";
-        this.validator = validator;
+    constructor(){
+        this.inputLine= null;
+        
 
         document.addEventListener('keydown', this.handleInput.bind(this));
+    }
+
+    setLetterCallback(callback){
+        this.inputLine = callback;
     }
 
     handleInput(event){
         if(event.key.length==1 && /[a-zA-Z]/.test(event.key)){
             const letter= event.key.toLowerCase();
             
-            if(this.validator.checkLetter(letter)){
-                this.input += letter;
-                this.notify(letter)
-
-            }else{
-                //
+            if(this.inputLine){
+                this.inputLine(letter);
             }   
             
         }
     }
     
-
+    /*
     notify(letter){
         //hier werden die anderen klassen von dem neuen buchstaben notifiert
         // evtl überflüssig
@@ -36,5 +36,5 @@ module.exports = class WordInputHandler{
 
     resetInput(){
         this.input= "";
-    }
+    }*/
 }

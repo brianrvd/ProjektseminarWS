@@ -1,32 +1,56 @@
 module.exports = class Validator {
 
 constructor(){
-  this.targetWord ="";
-  this.currentSpot=0;
+  this.activeWord = "";
+  this.currentInput = "";
+  //this.currentSpot=0;
+  //this.wordLocked = false;
 }
 
-setTargetWord(word){
-    this.targetWord = word.toLowerCase();
-    this.currentSpot = 0;
+
+
+setActiveWord(word){
+    this.activeWord = word.toLowerCase();
+    this.currentInput = ""
+    //this.wordLocked = false;
+    //this.currentSpot = 0;
 }
 
 checkLetter(letter){
-const expectedChar = this.targetWord[this.currentSpot];
+    //const expectedChar = this.targetWord[this.currentSpot];
+    if(/*!this.wordLocked ||*/ !this.activeWord){
+        return false;    
+    }
 
-if(letter === expectedChar){
-    this.currentSpot++;
-    return true;
+    const expectedChar = this.activeWord[this.currentInput.length];
 
-}
-return false;
-}
-isWordComplete(){
-    if(this.targetWord.length === this.currentSpot){
+    if(letter === expectedChar){
+        this.currentInput += letter;
         return true;
     }
     return false;
+
+
 }
-getCurrentSpot(){
-    return this.currentSpot;
+
+
+isWordComplete(){
+    return this.activeWord && this.currentInput === this.activeWord;
 }
+getActiveWord(){
+    return this.activeWord;
+}
+reset(){
+    this.currentInput = "";
+    this.activeWord = null;
+    //this.wordLocked = false;
+}
+
+getCurrentInput(){
+    return this.currentInput;
+}
+hasActiveWord(){
+    return this.activeWord !== "";
+}
+
 }
