@@ -1,6 +1,61 @@
 class EnglishGermanDictionary {
     constructor() {
-        this.words = {
+
+        // ---------------------------------------------------------
+        // 🔹 1. Englische Wörterliste (NUR English Words)
+        // ---------------------------------------------------------
+        this.words = [
+            "apple", "animal", "answer", "air", "age", "area", "arm", "ask",
+            "always", "anything",
+            "baby", "bag", "ball", "bank", "bath", "beach", "bear", "beautiful",
+            "because", "bed", "beer", "before", "begin", "behind", "big", "bird",
+            "birthday", "black", "blood", "blue", "book", "boot", "bread",
+            "break", "brother",
+            "cake", "car", "cat", "chair", "cheese", "child", "city", "clean",
+            "close", "cloud", "coffee", "cold", "color", "country", "cup",
+            "day", "dad", "dance", "dark", "daughter", "dead", "dear", "deep",
+            "desk", "dinner", "dog", "door", "dream", "drink", "drive",
+            "ear", "earth", "easy", "eat", "egg", "energy", "evening", "eye",
+            "everything",
+            "face", "family", "far", "farm", "fast", "father", "feet", "fight",
+            "fire", "fish", "floor", "flower", "food", "foot", "friend",
+            "garden", "girl", "glass", "go", "good", "green", "ground", "group",
+            "hair", "hand", "hang", "happy", "hat", "head", "health", "heart",
+            "heat", "heavy", "hello", "here", "high", "home", "horse", "house",
+            "ice", "idea", "ill", "important", "inside", "island",
+            "job", "juice", "jump",
+            "key", "kill", "king", "kitchen", "kiss", "know",
+            "lake", "land", "language", "large", "laugh", "learn", "left",
+            "leg", "life", "light", "like", "lion", "little", "long", "love",
+            "machine", "make", "man", "many", "milk", "minute", "money",
+            "month", "morning", "mother", "mountain",
+            "name", "nation", "near", "neck", "night", "noise", "north",
+            "ocean", "off", "office", "oil", "old", "open", "orange", "order",
+            "page", "paper", "parent", "park", "party", "pen", "people",
+            "phone", "picture", "place", "plant", "play", "pocket", "police",
+            "potato", "problem",
+            "queen", "question",
+            "rain", "restaurant", "red", "right", "river", "road", "room", "run",
+            "salt", "sand", "school", "sea", "season", "see", "shirt",
+            "shoe", "shop", "short", "sleep", "slow", "small", "smile", "snow",
+            "son", "sound", "soup", "sport", "spring", "star", "stone",
+            "street", "strong", "summer", "sun", "sweet",
+            "table", "teacher", "tea", "team", "ten", "test", "thing",
+            "thought", "time", "tired", "tomorrow", "town", "tree", "train",
+            "travel",
+            "under", "uncle", "up", "use",
+            "village", "voice",
+            "walk", "warm", "water", "way", "week", "welcome", "white",
+            "window", "wind", "winter", "woman", "word", "work", "world",
+            "write",
+            "year", "yellow", "young",
+            "zoo"
+        ];
+
+        // ---------------------------------------------------------
+        // 🔹 2. Englische Wörter → Deutsche Übersetzungen
+        // ---------------------------------------------------------
+        this.translations = {
 
             // --- A ---
             "apple": "Apfel", "animal": "Tier", "answer": "Antwort", "air": "Luft",
@@ -70,7 +125,8 @@ class EnglishGermanDictionary {
             // --- M ---
             "machine": "Maschine", "make": "machen", "man": "Mann", "many": "viele",
             "milk": "Milch", "minute": "Minute", "money": "Geld",
-            "month": "Monat", "morning": "Morgen", "mother": "Mutter", "mountain": "Berg",
+            "month": "Monat", "morning": "Morgen", "mother": "Mutter",
+            "mountain": "Berg",
 
             // --- N ---
             "name": "Name", "nation": "Nation", "near": "nah", "neck": "Nacken",
@@ -99,9 +155,10 @@ class EnglishGermanDictionary {
             "salt": "Salz", "sand": "Sand", "school": "Schule", "sea": "Meer",
             "season": "Jahreszeit", "see": "sehen", "shirt": "Hemd",
             "shoe": "Schuh", "shop": "Laden", "short": "kurz", "sleep": "schlafen",
-            "slow": "langsam", "small": "klein", "smile": "Lächeln", "snow": "Schnee",
-            "son": "Sohn", "sound": "Geräusch", "soup": "Suppe", "sport": "Sport",
-            "spring": "Frühling", "star": "Stern", "stone": "Stein", "street": "Straße",
+            "slow": "langsam", "small": "klein", "smile": "Lächeln",
+            "snow": "Schnee", "son": "Sohn", "sound": "Geräusch",
+            "soup": "Suppe", "sport": "Sport", "spring": "Frühling",
+            "star": "Stern", "stone": "Stein", "street": "Straße",
             "strong": "stark", "summer": "Sommer", "sun": "Sonne", "sweet": "süß",
 
             // --- T ---
@@ -119,8 +176,9 @@ class EnglishGermanDictionary {
             // --- W ---
             "walk": "gehen", "warm": "warm", "water": "Wasser", "way": "Weg",
             "week": "Woche", "welcome": "willkommen", "white": "weiß",
-            "window": "Fenster", "wind": "Wind", "winter": "Winter", "woman": "Frau",
-            "word": "Wort", "work": "Arbeit", "world": "Welt", "write": "schreiben",
+            "window": "Fenster", "wind": "Wind", "winter": "Winter",
+            "woman": "Frau", "word": "Wort", "work": "Arbeit", "world": "Welt",
+            "write": "schreiben",
 
             // --- Y ---
             "year": "Jahr", "yellow": "gelb", "young": "jung",
@@ -130,7 +188,10 @@ class EnglishGermanDictionary {
         };
     }
 
+   
     translate(englishWord) {
-        return this.words[englishWord.toLowerCase()] ?? null;
+        return this.translations[englishWord.toLowerCase()] ?? null;
     }
 }
+module.exports = EnglishGermanDictionary;
+
