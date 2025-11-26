@@ -1,5 +1,10 @@
 /* zentriert alles horizontal und vertikal */
 body {
+    background-color: rgb(96, 96, 96);
+    padding: 0px;
+    margin: 0px;
+    font-size: 14px;
+    font-family: Arial;
     display: flex;
     justify-content: center;
     align-items: center;
