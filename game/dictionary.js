@@ -1,8 +1,5 @@
 class EnglishGermanDictionary {
     constructor() {
-<<<<<<< HEAD
-        this.words = {
-=======
 
         // ---------------------------------------------------------
         // 🔹 1. Englische Wörterliste (NUR English Words)
@@ -59,7 +56,6 @@ class EnglishGermanDictionary {
         // 🔹 2. Englische Wörter → Deutsche Übersetzungen
         // ---------------------------------------------------------
         this.translations = {
->>>>>>> 9230ecf7ebfc6abda101a57969820e5d0616c15e
 
             // --- A ---
             "apple": "Apfel", "animal": "Tier", "answer": "Antwort", "air": "Luft",
@@ -129,12 +125,8 @@ class EnglishGermanDictionary {
             // --- M ---
             "machine": "Maschine", "make": "machen", "man": "Mann", "many": "viele",
             "milk": "Milch", "minute": "Minute", "money": "Geld",
-<<<<<<< HEAD
-            "month": "Monat", "morning": "Morgen", "mother": "Mutter", "mountain": "Berg",
-=======
             "month": "Monat", "morning": "Morgen", "mother": "Mutter",
             "mountain": "Berg",
->>>>>>> 9230ecf7ebfc6abda101a57969820e5d0616c15e
 
             // --- N ---
             "name": "Name", "nation": "Nation", "near": "nah", "neck": "Nacken",
@@ -163,16 +155,9 @@ class EnglishGermanDictionary {
             "salt": "Salz", "sand": "Sand", "school": "Schule", "sea": "Meer",
             "season": "Jahreszeit", "see": "sehen", "shirt": "Hemd",
             "shoe": "Schuh", "shop": "Laden", "short": "kurz", "sleep": "schlafen",
-<<<<<<< HEAD
             "slow": "langsam", "small": "klein", "smile": "Lächeln", "snow": "Schnee",
             "son": "Sohn", "sound": "Geräusch", "soup": "Suppe", "sport": "Sport",
             "spring": "Frühling", "star": "Stern", "stone": "Stein", "street": "Straße",
-=======
-            "slow": "langsam", "small": "klein", "smile": "Lächeln",
-            "snow": "Schnee", "son": "Sohn", "sound": "Geräusch",
-            "soup": "Suppe", "sport": "Sport", "spring": "Frühling",
-            "star": "Stern", "stone": "Stein", "street": "Straße",
->>>>>>> 9230ecf7ebfc6abda101a57969820e5d0616c15e
             "strong": "stark", "summer": "Sommer", "sun": "Sonne", "sweet": "süß",
 
             // --- T ---
@@ -190,14 +175,9 @@ class EnglishGermanDictionary {
             // --- W ---
             "walk": "gehen", "warm": "warm", "water": "Wasser", "way": "Weg",
             "week": "Woche", "welcome": "willkommen", "white": "weiß",
-<<<<<<< HEAD
-            "window": "Fenster", "wind": "Wind", "winter": "Winter", "woman": "Frau",
-            "word": "Wort", "work": "Arbeit", "world": "Welt", "write": "schreiben",
-=======
             "window": "Fenster", "wind": "Wind", "winter": "Winter",
             "woman": "Frau", "word": "Wort", "work": "Arbeit", "world": "Welt",
             "write": "schreiben",
->>>>>>> 9230ecf7ebfc6abda101a57969820e5d0616c15e
 
             // --- Y ---
             "year": "Jahr", "yellow": "gelb", "young": "jung",
@@ -207,17 +187,9 @@ class EnglishGermanDictionary {
         };
     }
 
-<<<<<<< HEAD
-    translate(englishWord) {
-        return this.words[englishWord.toLowerCase()] ?? null;
-    }
-}
-=======
-   
     translate(englishWord) {
         return this.translations[englishWord.toLowerCase()] ?? null;
     }
 }
-module.exports = EnglishGermanDictionary;
 
->>>>>>> 9230ecf7ebfc6abda101a57969820e5d0616c15e
+module.exports = EnglishGermanDictionary;
