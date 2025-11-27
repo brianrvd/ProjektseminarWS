@@ -48,9 +48,14 @@ module.exports = class RandomWalkCircleElement extends Element {
 
     onCollision() {
         this.hasCollided = true
-        this.game.elementList.delete(this.instanceId);
-        this.callBurst() 
-        this.game.health.reduce();             
+        this.game.elementList.delete(this.instanceId)
+        this.callBurst()
+        this.game.health.reduce()             
     }
     
+    bulletMet() {
+        this.hasCollided = true
+        this.game.elementList.delete(this.instanceId)
+        this.callBurst()
+    }
 }

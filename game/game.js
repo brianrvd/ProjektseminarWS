@@ -25,7 +25,7 @@ module.exports = class Game {
         this.wordInputhander = new WordInputHandler();
         this.activeWordElement = null;
         this.wordInputhander.setLetterCallback(this.handleLetterInput.bind(this));
-        
+        this.isInputSet = false
 
 
     }
@@ -34,13 +34,18 @@ module.exports = class Game {
 
     start() {
         this.elementList = new ElementList()
-        this.setupInput()
+        if(!this.isInputSet) {
+            this.isInputSet = true
+            this.setupInput()
+        }
         this.elementList.add(new Stage());  
         this.elementList.add(this.health);
     
         for (let i = 0; i < 60; i++) {
-            setTimeout(() => { 
-                this.elementList.add(new RandomWalkCircleElement(this));
+            setTimeout(() => {
+                if(this.elementList != null) {
+                    this.elementList.add(new RandomWalkCircleElement(this));
+                } 
             }, 3000 * i);
         }
         this.elementList.add(new Stage())
@@ -55,15 +60,14 @@ module.exports = class Game {
     stop() {
         window.cancelAnimationFrame(this.raf)
         this.elementList = null
-       
     }
     // menü nach tod einblinden 
     gameOver() {
-    this.stop();
-    document.getElementById("mycanvas").style.display = "none";      // Canvas verstecken
-    document.getElementById("main-menu").style.display = "flex";    // Menü zeigen 
-    this.health = new Health();                                    // leben wieder zurück setzen 
-
+        this.stop();
+        document.getElementById("mycanvas").style.display = "none";      // Canvas verstecken
+        document.getElementById("game-wrapper").style.display = "flex";    // Menü zeigen 
+        this.health = new Health();                                    // leben wieder zurück setzen 
+        this.score = 0;
     }
     //----------------------
 
@@ -72,15 +76,11 @@ module.exports = class Game {
         let ctx = mycanvas.getContext('2d')
         ctx.font = "18px Arial";
 
-        
-    
-        
         //--- clear screen
         ctx.fillStyle = 'rgba(235, 250, 255, 0.1)' // alpha < 1 löscht den Bildschrim nur teilweise -> bewegte Gegenstände erzeugen Spuren
         ctx.fillRect(0, 0, mycanvas.clientWidth, mycanvas.clientHeight)
 
-        //Änderungen von Brian (test)
-         
+        //Änderungen von Brian (test)         
 
         //--- draw elements
         this.elementList.draw(ctx)
@@ -118,22 +118,24 @@ module.exports = class Game {
         return false
     }
     
-    /*setupInput() {
+    setupInput() {
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') this.shootToCircle()
-            else if (e.key === 'Backspace') this.currentInput = this.currentInput.slice(0, -1)
-            else if (/[a-zA-Z]/.test(e.key)) this.currentInput += e.key.toLowerCase()
+//            if (e.key === 'Enter') this.shootToCircle()
+            /*else*/ if (e.key === 'Backspace') this.currentInput = this.currentInput.slice(0, -1)
+//            else if (/[a-zA-Z]/.test(e.key)) this.currentInput += e.key.toLowerCase()
             this.updateUI()
         })
-    }*/
+    }
 
-    /*shootToCircle() {
-        if (!this.currentInput) returncable
+    shootToCircle() {
+        if (!this.currentInput) return;
     
         // Finde das WORT in der elementList
-        const targetWord = this.elementList.find(el => 
-            el instanceof Word && !el.hasCollided && el.word === this.getCurrentWord()
-        )
+        if(this.elementList != null) {
+            const targetWord = this.elementList.find(el => 
+                el instanceof Word && !el.hasCollided && el.word === this.getCurrentWord()
+            )
+        }
     
             if (!targetWord) return
     
@@ -146,7 +148,7 @@ module.exports = class Game {
             this
         ))
         this.currentInput = ''
-    }*/
+    }
 
     getCurrentWord() {
         return this.currentInput
@@ -218,15 +220,15 @@ findNewWord(firstLetter) {
         
         // Kugel auf den Kreis schießen
         const targetCircle = this.elementList.get(this.activeWordElement.circleId);
-    if (targetCircle) {
-        this.elementList.add(new Bullet(
-            targetCircle.x,
-            targetCircle.y,
-            this.activeWordElement.circleId,this));
-    }
+        if (targetCircle) {
+            this.score++;
+            this.elementList.add(new Bullet(
+                targetCircle.x,
+                targetCircle.y,
+                this.activeWordElement.circleId,this));
+        }
     
-    
-    this.resetActiveWord();
+        this.resetActiveWord();
     }
 
 // Aktives Wort zurücksetzen
