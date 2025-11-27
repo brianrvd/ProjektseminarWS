@@ -214,6 +214,9 @@ const Health = require("./health")
 
 module.exports = class Game {
 
+    intervalId = 0
+    cometesCount = 0
+
     constructor() {
         this.raf                       // request animation frame handle
         this.elementList = null
@@ -227,7 +230,7 @@ module.exports = class Game {
         this.activeWordElement = null;
         this.wordInputhander.setLetterCallback(this.handleLetterInput.bind(this));
         this.isInputSet = false
-
+        this.isPaused = false
 
     }
 
@@ -242,13 +245,15 @@ module.exports = class Game {
         this.elementList.add(new Stage());  
         this.elementList.add(this.health);
     
-        for (let i = 0; i < 60; i++) {
+        /*for (let i = 0; i < 60; i++) {
             setTimeout(() => {
                 if(this.elementList != null) {
                     this.elementList.add(new RandomWalkCircleElement(this));
                 } 
             }, 3000 * i);
-        }
+        }*/
+        this.generateCometes();
+
         this.elementList.add(new Stage())
 
         this.timeOfLastFrame = Date.now()
@@ -256,19 +261,62 @@ module.exports = class Game {
       
     }
 
-    //----------------------
+    generateCometes() {
+        this.elementList.add(new RandomWalkCircleElement(this));
+        this.intervalId = setInterval(() => {
+            if(this.elementList != null) {
+                this.elementList.add(new RandomWalkCircleElement(this));
+            } 
+            this.cometesCount++;
+            if (this.cometesCount >= 10) {
+                stopLoop();
+            }
+        }, 3000);
+    }
+
+    stopGeneratingCometes() {
+        clearInterval(this.intervalId);
+        console.log("Loop stopped.");
+    }
 
     stop() {
         window.cancelAnimationFrame(this.raf)
         this.elementList = null
     }
+
+    pause() {
+        this.isPaused = true
+        this.stopGeneratingCometes()
+
+        document.getElementById("main-menu").style.display = "flex"
+
+        const startButton = window.document.getElementById("start-button") 
+        startButton.textContent = "Continue"
+        startButton.onclick = () => {
+            document.getElementById("main-menu").style.display = "none"
+            this.continue()
+        }
+    }
+
+    continue() {
+        this.isPaused = false
+        this.generateCometes()
+    }
+
     // menü nach tod einblinden 
     gameOver() {
         this.stop();
-        document.getElementById("mycanvas").style.display = "none";      // Canvas verstecken
-        document.getElementById("game-wrapper").style.display = "flex";    // Menü zeigen 
+        this.stopGeneratingCometes()
+        document.getElementById("main-menu").style.display = "flex";    // Menü zeigen 
         this.health = new Health();                                    // leben wieder zurück setzen 
         this.score = 0;
+
+        const startButton = window.document.getElementById("start-button") 
+        startButton.textContent = "Restart"
+        startButton.onclick = () => {
+            document.getElementById("main-menu").style.display = "none" // versteckt das main menü 
+            this.start()
+        }
     }
     //----------------------
 
@@ -278,32 +326,35 @@ module.exports = class Game {
         ctx.font = "18px Arial";
 
         //--- clear screen
-        ctx.fillStyle = 'rgba(235, 250, 255, 0.1)' // alpha < 1 löscht den Bildschrim nur teilweise -> bewegte Gegenstände erzeugen Spuren
-        ctx.fillRect(0, 0, mycanvas.clientWidth, mycanvas.clientHeight)
+        //ctx.fillStyle = 'rgba(235, 250, 255, 0.1)' // alpha < 1 löscht den Bildschrim nur teilweise -> bewegte Gegenstände erzeugen Spuren
+        //ctx.fillRect(0, 0, mycanvas.clientWidth, mycanvas.clientHeight)
 
-        //Änderungen von Brian (test)         
+        if(!document.hasFocus()) {
+            this.pause()
+        }
 
         //--- draw elements
         this.elementList.draw(ctx)
 
-        //--- execute elemenSt actions
-        this.elementList.action()
+        if(!this.isPaused) {
+            //--- execute elemenSt actions
+            this.elementList.action()
 
-        //--- check element collisions
-        this.elementList.checkCollision()
+            //--- check element collisions
+            this.elementList.checkCollision()
+        }
+        
+        
         // Spieler tod ? 
         if (this.health.isDead()) {
-                this.gameOver();
-             return;
-            }
-
+            this.gameOver();
+            return;
+        }
 
         this.updateUI()
 
         this.raf = window.requestAnimationFrame(this.tick.bind(this))
 
-       
-    
     }
     
     
@@ -386,7 +437,8 @@ findNewWord(firstLetter) {
     
     // Finde das ERSTE Wort das mit dem Buchstaben beginnt
     const matchingWord = activeWords.find(word => 
-        word.word.toLowerCase().startsWith(firstLetter)
+        //word.word.toLowerCase().startsWith(firstLetter)
+        word.word.startsWith(firstLetter)
     );
     
     if (matchingWord) {
@@ -398,7 +450,8 @@ findNewWord(firstLetter) {
 
     // Tippe am aktiven Wort weiter
     continueTypingWord(letter) {
-        const expectedNextLetter = this.activeWordElement.word.toLowerCase()[this.currentInput.length];
+        //const expectedNextLetter = this.activeWordElement.word.toLowerCase()[this.currentInput.length];
+        const expectedNextLetter = this.activeWordElement.word[this.currentInput.length];
     
         // Prüfe ob der Buchstabe korrekt ist
         if (letter === expectedNextLetter) {
@@ -406,7 +459,8 @@ findNewWord(firstLetter) {
         
         
             // Prüfe ob Wort vollständig
-            if (this.currentInput === this.activeWordElement.word.toLowerCase()) {
+            //if (this.currentInput === this.activeWordElement.word.toLowerCase()) {
+            if (this.currentInput === this.activeWordElement.word) {
                 this.onWordCompleted();
             }
             } else {
@@ -488,13 +542,13 @@ module.exports = class Health extends Element {
         if (!this.loaded) return;                          //wenn das bild geladen ist sollte es die herzen zeichnen
         
         if (this.health >= 1) {
-            ctx.drawImage(this.heart, 10,10,25,25);
+            ctx.drawImage(this.heart, 10,30,25,25);
         }
         if (this.health >= 2) {
-            ctx.drawImage(this.heart, 40,10,25,25);
+            ctx.drawImage(this.heart, 40,30,25,25);
         }
         if (this.health >= 3) {
-            ctx.drawImage(this.heart, 70,10,25,25);
+            ctx.drawImage(this.heart, 70,30,25,25);
         }
     }
 
@@ -522,16 +576,16 @@ module.exports = class Health extends Element {
  
 const Game = require("./game")
 let myGame = new Game()
-//myGame.start()
 
 // beim tasten druck canvas zeigen und menü verstecken 
 window.onload = () => {
     const startButton = window.document.getElementById("start-button") 
     startButton.onclick = () => {
-        document.getElementById("game-wrapper").style.display = "none" // versteckt das main menü 
-        document.getElementById("mycanvas").style.display = "flex" // zeigt canvas wieder auf
+        document.getElementById("main-menu").style.display = "none" // versteckt das main menü 
         myGame.start()
     }
+    const pauseButton = window.document.getElementById("pauseButton");
+    pauseButton.onclick = function() { myGame.pause(); }
 };
 
 },{"./game":5}],8:[function(require,module,exports){
@@ -634,7 +688,8 @@ constructor(){
 
 
 setActiveWord(word){
-    this.activeWord = word.toLowerCase();
+    //this.activeWord = word.toLowerCase();
+    this.activeWord = word;
     this.currentInput = ""
     //this.wordLocked = false;
     //this.currentSpot = 0;
@@ -744,7 +799,8 @@ module.exports = class WordInputHandler{
 
     handleInput(event){
         if(event.key.length==1 && /[a-zA-Z]/.test(event.key)){
-            const letter= event.key.toLowerCase();
+            //const letter= event.key.toLowerCase();
+            const letter= event.key;
             
             if(this.inputLine){
                 this.inputLine(letter);
