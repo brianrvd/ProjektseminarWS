@@ -5,13 +5,14 @@
     <meta charset="utf-8">
     <title>TypeShooter</title>
     <link rel="stylesheet" type="text/css" href="game.css" />
+    <script src="bundle.js"></script>
 </head>
 
 <body>
     <canvas id="mycanvas" width="600" height="700"></canvas>
     <div id= "ui"
     style = "position: absolute; top:10px ; left:10px ; color:white; font-family:Arial">
-        Score: <span id="score">0</span> | Type: <span id)"current-input"></span>
+        Score: <span id="score">0</span> | Type: <span id="current-input"></span>
     </div>
     <div id="game-wrapper">
         <!-- Alles muss im game-wrapper sein -->
@@ -25,9 +26,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Script am Ende laden, damit DOM fertig ist  -->
-    <script src="bundle.js"></script>
 </body>
 
 </html>

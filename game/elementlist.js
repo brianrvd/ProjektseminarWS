@@ -18,6 +18,9 @@ module.exports = class ElementList extends Array {
     delete(i) {
         //this.splice(i, 1)
         this[i] = null
+        //Änderung von Brian
+       
+
     }
 
     draw(ctx) {

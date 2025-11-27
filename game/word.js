@@ -38,5 +38,9 @@ module.exports = class Word extends Element {
     onCollision() {
         this.hasCollided = true
         this.game.elementList.delete(this.instanceId);
+        /*änderungen von Brian
+        if (this.game.activeWordElement === this){
+            this.game.resetActiveWord();
+        }*/
     }
 }

@@ -11,19 +11,23 @@ module.exports = class RandomWalkCircleElement extends Element {
         this.game = game
         this.x = Math.random() * 530 + 40
         this.y = 0
-        this.speed = 0.7                    //orginal speed = 0.7; ich verändere es zum testen 
+        this.speed = 0.7
+        
         setTimeout(() => { 
             let word = new Word(this.game, this.x, this.y, this.instanceId, this.speed)
             this.game.elementList.add(word)
         }, 100);
+        
     }
 
     draw(ctx) {
             ctx.beginPath()
             ctx.arc(this.x, this.y, 15, 0, Math.PI * 2, true)
             ctx.closePath()
-            ctx.fillStyle = "grey"
+            
+            ctx.fillStyle =  "grey"
             ctx.fill()
+
     }
 
     callBurst() {
@@ -44,8 +48,14 @@ module.exports = class RandomWalkCircleElement extends Element {
 
     onCollision() {
         this.hasCollided = true
-        this.game.elementList.delete(this.instanceId);
-        this.callBurst() 
-        this.game.health.reduce();             
+        this.game.elementList.delete(this.instanceId)
+        this.callBurst()
+        this.game.health.reduce()             
+    }
+    
+    bulletMet() {
+        this.hasCollided = true
+        this.game.elementList.delete(this.instanceId)
+        this.callBurst()
     }
 }

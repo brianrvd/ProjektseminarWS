@@ -29,9 +29,9 @@ module.exports = class Burst extends Element {
     
     checkCollision() { 
         if(this.instanceId != -1) {
-        setTimeout(() => {
-            this.onCollision()
-        }, 700);  
+            setTimeout(() => {
+                this.onCollision()
+            }, 700);  
         }
     }
 
