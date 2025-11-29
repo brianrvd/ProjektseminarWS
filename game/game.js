@@ -13,6 +13,9 @@ const Health = require("./health")
 
 module.exports = class Game {
 
+    intervalId = 0
+    cometesCount = 0
+
     constructor() {
         this.raf                       // request animation frame handle
         this.elementList = null
@@ -25,8 +28,8 @@ module.exports = class Game {
         this.wordInputhander = new WordInputHandler();
         this.activeWordElement = null;
         this.wordInputhander.setLetterCallback(this.handleLetterInput.bind(this));
-        
-
+        this.isInputSet = false
+        this.isPaused = false
 
     }
 
@@ -34,15 +37,22 @@ module.exports = class Game {
 
     start() {
         this.elementList = new ElementList()
-        this.setupInput()
+        if(!this.isInputSet) {
+            this.isInputSet = true
+            this.setupInput()
+        }
         this.elementList.add(new Stage());  
         this.elementList.add(this.health);
     
-        for (let i = 0; i < 60; i++) {
-            setTimeout(() => { 
-                this.elementList.add(new RandomWalkCircleElement(this));
+        /*for (let i = 0; i < 60; i++) {
+            setTimeout(() => {
+                if(this.elementList != null) {
+                    this.elementList.add(new RandomWalkCircleElement(this));
+                } 
             }, 3000 * i);
-        }
+        }*/
+        this.generateCometes();
+
         this.elementList.add(new Stage())
 
         this.timeOfLastFrame = Date.now()
@@ -50,20 +60,62 @@ module.exports = class Game {
       
     }
 
-    //----------------------
+    generateCometes() {
+        this.elementList.add(new RandomWalkCircleElement(this));
+        this.intervalId = setInterval(() => {
+            if(this.elementList != null) {
+                this.elementList.add(new RandomWalkCircleElement(this));
+            } 
+            this.cometesCount++;
+            if (this.cometesCount >= 10) {
+                stopLoop();
+            }
+        }, 3000);
+    }
+
+    stopGeneratingCometes() {
+        clearInterval(this.intervalId);
+        console.log("Loop stopped.");
+    }
 
     stop() {
         window.cancelAnimationFrame(this.raf)
         this.elementList = null
-       
     }
+
+    pause() {
+        this.isPaused = true
+        this.stopGeneratingCometes()
+
+        document.getElementById("main-menu").style.display = "flex"
+
+        const startButton = window.document.getElementById("start-button") 
+        startButton.textContent = "Continue"
+        startButton.onclick = () => {
+            document.getElementById("main-menu").style.display = "none"
+            this.continue()
+        }
+    }
+
+    continue() {
+        this.isPaused = false
+        this.generateCometes()
+    }
+
     // menü nach tod einblinden 
     gameOver() {
-    this.stop();
-    document.getElementById("mycanvas").style.display = "none";      // Canvas verstecken
-    document.getElementById("main-menu").style.display = "flex";    // Menü zeigen 
-    this.health = new Health();                                    // leben wieder zurück setzen 
+        this.stop();
+        this.stopGeneratingCometes()
+        document.getElementById("main-menu").style.display = "flex";    // Menü zeigen 
+        this.health = new Health();                                    // leben wieder zurück setzen 
+        this.score = 0;
 
+        const startButton = window.document.getElementById("start-button") 
+        startButton.textContent = "Restart"
+        startButton.onclick = () => {
+            document.getElementById("main-menu").style.display = "none" // versteckt das main menü 
+            this.start()
+        }
     }
     //----------------------
 
@@ -72,37 +124,36 @@ module.exports = class Game {
         let ctx = mycanvas.getContext('2d')
         ctx.font = "18px Arial";
 
-        
-    
-        
         //--- clear screen
-        ctx.fillStyle = 'rgba(235, 250, 255, 0.1)' // alpha < 1 löscht den Bildschrim nur teilweise -> bewegte Gegenstände erzeugen Spuren
-        ctx.fillRect(0, 0, mycanvas.clientWidth, mycanvas.clientHeight)
+        //ctx.fillStyle = 'rgba(235, 250, 255, 0.1)' // alpha < 1 löscht den Bildschrim nur teilweise -> bewegte Gegenstände erzeugen Spuren
+        //ctx.fillRect(0, 0, mycanvas.clientWidth, mycanvas.clientHeight)
 
-        //Änderungen von Brian (test)
-         
+        if(!document.hasFocus()) {
+            this.pause()
+        }
 
         //--- draw elements
         this.elementList.draw(ctx)
 
-        //--- execute elemenSt actions
-        this.elementList.action()
+        if(!this.isPaused) {
+            //--- execute elemenSt actions
+            this.elementList.action()
 
-        //--- check element collisions
-        this.elementList.checkCollision()
+            //--- check element collisions
+            this.elementList.checkCollision()
+        }
+        
+        
         // Spieler tod ? 
         if (this.health.isDead()) {
-                this.gameOver();
-             return;
-            }
-
+            this.gameOver();
+            return;
+        }
 
         this.updateUI()
 
         this.raf = window.requestAnimationFrame(this.tick.bind(this))
 
-       
-    
     }
     
     
@@ -118,22 +169,24 @@ module.exports = class Game {
         return false
     }
     
-    /*setupInput() {
+    setupInput() {
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') this.shootToCircle()
-            else if (e.key === 'Backspace') this.currentInput = this.currentInput.slice(0, -1)
-            else if (/[a-zA-Z]/.test(e.key)) this.currentInput += e.key.toLowerCase()
+//            if (e.key === 'Enter') this.shootToCircle()
+            /*else*/ if (e.key === 'Backspace') this.currentInput = this.currentInput.slice(0, -1)
+//            else if (/[a-zA-Z]/.test(e.key)) this.currentInput += e.key.toLowerCase()
             this.updateUI()
         })
-    }*/
+    }
 
-    /*shootToCircle() {
-        if (!this.currentInput) returncable
+    shootToCircle() {
+        if (!this.currentInput) return;
     
         // Finde das WORT in der elementList
-        const targetWord = this.elementList.find(el => 
-            el instanceof Word && !el.hasCollided && el.word === this.getCurrentWord()
-        )
+        if(this.elementList != null) {
+            const targetWord = this.elementList.find(el => 
+                el instanceof Word && !el.hasCollided && el.word === this.getCurrentWord()
+            )
+        }
     
             if (!targetWord) return
     
@@ -146,7 +199,7 @@ module.exports = class Game {
             this
         ))
         this.currentInput = ''
-    }*/
+    }
 
     getCurrentWord() {
         return this.currentInput
@@ -183,7 +236,8 @@ findNewWord(firstLetter) {
     
     // Finde das ERSTE Wort das mit dem Buchstaben beginnt
     const matchingWord = activeWords.find(word => 
-        word.word.toLowerCase().startsWith(firstLetter)
+        //word.word.toLowerCase().startsWith(firstLetter)
+        word.word.startsWith(firstLetter)
     );
     
     if (matchingWord) {
@@ -195,7 +249,8 @@ findNewWord(firstLetter) {
 
     // Tippe am aktiven Wort weiter
     continueTypingWord(letter) {
-        const expectedNextLetter = this.activeWordElement.word.toLowerCase()[this.currentInput.length];
+        //const expectedNextLetter = this.activeWordElement.word.toLowerCase()[this.currentInput.length];
+        const expectedNextLetter = this.activeWordElement.word[this.currentInput.length];
     
         // Prüfe ob der Buchstabe korrekt ist
         if (letter === expectedNextLetter) {
@@ -203,7 +258,8 @@ findNewWord(firstLetter) {
         
         
             // Prüfe ob Wort vollständig
-            if (this.currentInput === this.activeWordElement.word.toLowerCase()) {
+            //if (this.currentInput === this.activeWordElement.word.toLowerCase()) {
+            if (this.currentInput === this.activeWordElement.word) {
                 this.onWordCompleted();
             }
             } else {
@@ -218,15 +274,15 @@ findNewWord(firstLetter) {
         
         // Kugel auf den Kreis schießen
         const targetCircle = this.elementList.get(this.activeWordElement.circleId);
-    if (targetCircle) {
-        this.elementList.add(new Bullet(
-            targetCircle.x,
-            targetCircle.y,
-            this.activeWordElement.circleId,this));
-    }
+        if (targetCircle) {
+            this.score++;
+            this.elementList.add(new Bullet(
+                targetCircle.x,
+                targetCircle.y,
+                this.activeWordElement.circleId,this));
+        }
     
-    
-    this.resetActiveWord();
+        this.resetActiveWord();
     }
 
 // Aktives Wort zurücksetzen

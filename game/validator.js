@@ -10,7 +10,8 @@ constructor(){
 
 
 setActiveWord(word){
-    this.activeWord = word.toLowerCase();
+    //this.activeWord = word.toLowerCase();
+    this.activeWord = word;
     this.currentInput = ""
     //this.wordLocked = false;
     //this.currentSpot = 0;
