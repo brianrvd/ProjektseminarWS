@@ -15,7 +15,8 @@ module.exports = class WordInputHandler{
 
     handleInput(event){
         if(event.key.length==1 && /[a-zA-Z]/.test(event.key)){
-            const letter= event.key.toLowerCase();
+            //const letter= event.key.toLowerCase();
+            const letter= event.key;
             
             if(this.inputLine){
                 this.inputLine(letter);

@@ -8,16 +8,20 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh; 
-    margin: 0;
     background-color: rgb(103, 152, 178);
+}
+
+#mycanvas {
+    background-image: url('img/background.png');
 }
 
 /* Wrapper für Canvas + Menü -> sorgt dafür dass der menü sich in canvas befindet  */
 #game-wrapper {
-    position: relative;
+    position: absolute;
     width: 600px;
     height: 700px;
+    display: flex;
+    justify-content: space-between;
 }
 
 #main-menu {
@@ -39,12 +43,10 @@ body {
     display: flex;
     justify-content: center; 
     align-items: center;     
-    background-color: rgba(0,0,0,0.5);
+    /*background-color: rgba(0,0,0,0.5);
     background-image: url('img/background.png');
     background-size: cover;
-    background-position: center;
-    border: 4px solid white;
-    border-radius: 12px;
+    background-position: center;*/
     box-shadow: 0 0 20px rgba(0,0,0,0.5);
     z-index: 10;             /* über Canvas */
 }
@@ -58,7 +60,6 @@ body {
     justify-content: center;
     align-items: center;
     background-color: rgba(255,255,255,0.1);
-    border-radius: 12px;
     padding: 20px;
 }
 
@@ -87,4 +88,15 @@ body {
 #start-button:hover {
     background-color: #45a049;
     transform: scale(1.05);
+}
+
+#pauseButton {
+    opacity: 0.5; 
+    width: 70px;
+    height: 70px;
+}
+
+#pauseButton:hover {
+    opacity: 0.8;
+    transition: 0.2s;
 }

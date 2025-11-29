@@ -22,13 +22,13 @@ module.exports = class Health extends Element {
         if (!this.loaded) return;                          //wenn das bild geladen ist sollte es die herzen zeichnen
         
         if (this.health >= 1) {
-            ctx.drawImage(this.heart, 10,10,25,25);
+            ctx.drawImage(this.heart, 10,30,25,25);
         }
         if (this.health >= 2) {
-            ctx.drawImage(this.heart, 40,10,25,25);
+            ctx.drawImage(this.heart, 40,30,25,25);
         }
         if (this.health >= 3) {
-            ctx.drawImage(this.heart, 70,10,25,25);
+            ctx.drawImage(this.heart, 70,30,25,25);
         }
     }
 
