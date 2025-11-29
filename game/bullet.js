@@ -57,6 +57,7 @@ module.exports = class Bullet extends Element {
     checkCollision() {
         if (this.game.elementList.get(this.targetId) == null) {
             this.onCollision()
+            return
         }
         const dist = Math.hypot(this.targetX - this.x, this.targetY - this.y)
         if (dist < 15) {
