@@ -23,6 +23,7 @@ module.exports = class Game {
 
         this.score = 0 
         this.currentInput = ''
+        this.gameMode = 'english'  // 'english' oder 'german'
         // Änderungen von Brian
         this.validator = new Validator();
         this.wordInputhander = new WordInputHandler();
@@ -88,6 +89,8 @@ module.exports = class Game {
         this.stopGeneratingCometes()
 
         document.getElementById("main-menu").style.display = "flex"
+        document.getElementById("mode-selection").style.display = "none"
+        document.getElementById("start-button").style.display = "block"
 
         const startButton = window.document.getElementById("start-button") 
         startButton.textContent = "Continue"
@@ -107,6 +110,8 @@ module.exports = class Game {
         this.stop();
         this.stopGeneratingCometes()
         document.getElementById("main-menu").style.display = "flex";    // Menü zeigen 
+        document.getElementById("mode-selection").style.display = "flex"  // Zeige Mode-Buttons
+        document.getElementById("start-button").style.display = "none"  // Verstecke Start-Button
         this.health = new Health();                                    // leben wieder zurück setzen 
         this.score = 0;
 
@@ -158,7 +163,6 @@ module.exports = class Game {
     
     
     
-
 
     isWordOnDisplay(word) {
         for (let i = 0; i < this.elementList.length; i++) {
@@ -213,13 +217,14 @@ module.exports = class Game {
     
 
 handleLetterInput(letter) {
+    const lowerLetter = letter.toLowerCase();
     // Wenn kein Wort aktiv ist, suche ein neues
     if (!this.activeWordElement) {
-        this.findNewWord(letter);
+        this.findNewWord(lowerLetter);
     } 
     // Wenn Wort aktiv ist, tippe weiter
     else {
-        this.continueTypingWord(letter);
+        this.continueTypingWord(lowerLetter);
     }
 }
 
@@ -249,11 +254,10 @@ findNewWord(firstLetter) {
 
     // Tippe am aktiven Wort weiter
     continueTypingWord(letter) {
-        //const expectedNextLetter = this.activeWordElement.word.toLowerCase()[this.currentInput.length];
         const expectedNextLetter = this.activeWordElement.word[this.currentInput.length];
     
-        // Prüfe ob der Buchstabe korrekt ist
-        if (letter === expectedNextLetter) {
+        // Prüfe ob der Buchstabe korrekt ist (case-insensitive)
+        if (letter.toLowerCase() === expectedNextLetter.toLowerCase()) {
             this.currentInput += letter;
         
         
