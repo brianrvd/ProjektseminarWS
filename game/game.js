@@ -9,6 +9,8 @@ const Word = require("./word")
 const Validator = require('./validator')
 const WordInputHandler = require('./wordinputhandler')
 const Health = require("./health")
+const SpawnerBoss = require("./spawnerboss")
+const RegenerateBoss = require("./regenerateBoss")
 
 
 module.exports = class Game {
@@ -30,6 +32,8 @@ module.exports = class Game {
         this.wordInputhander.setLetterCallback(this.handleLetterInput.bind(this));
         this.isInputSet = false
         this.isPaused = false
+        this.lastBossScore = 0
+        this.bossActive = false;
 
     }
 
@@ -142,6 +146,7 @@ module.exports = class Game {
             //--- check element collisions
             this.elementList.checkCollision()
         }
+        this.spawnBoss();
         
         
         // Spieler tod ? 
@@ -285,13 +290,13 @@ findNewWord(firstLetter) {
         this.resetActiveWord();
     }
 
-// Aktives Wort zurücksetzen
-resetActiveWord() {
+    // Aktives Wort zurücksetzen
+    resetActiveWord() {
     this.activeWordElement = null;
     this.currentInput = '';
-}
+    }
 
-// Prüfe in jedem Frame ob aktives Wort noch existiert
+    // Prüfe in jedem Frame ob aktives Wort noch existiert
 checkActiveWordValidity() {
     if (this.activeWordElement) {
         let wordStillExists = false;
@@ -310,6 +315,19 @@ checkActiveWordValidity() {
             this.resetActiveWord();
         }
     }
+}
+spawnBoss() {
+    if(this.bossActive){
+        return;
+    }
+    if(this.score > 0 && this.score % 2 === 0 && this.score !== this.lastBossScore) {
+        this.lastBossScore = this.score;
+        this.bossActive = true;
+        //this.elementList.add(new SpawnerBoss(this));
+        this.elementList.add(new RegenerateBoss(this));
+        
+    }
+    
 }
 
 
