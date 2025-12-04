@@ -9,16 +9,12 @@
 </head>
 
 <body>
-    <canvas id="mycanvas" width="600" height="700"></canvas>
-    <div id= "ui"
-    style = "position: absolute; top:10px ; left:10px ; color:white; font-family:Arial">
-        Score: <span id="score">0</span> | Type: <span id="current-input"></span>
-    </div>
+    <canvas id="mycanvas" width="600px" height="700px"></canvas>
     <div id="game-wrapper">
-        <!-- Alles muss im game-wrapper sein -->
-        <canvas id="mycanvas" width="600" height="700" style="display:none;"></canvas>
-
-        <!-- Hauptmenü -->
+        <div id= "ui" style = "margin: 10px; color:white; font-family:Arial">
+        Score: <span id="score">0</span> | Type: <span id="current-input"></span>
+        </div>
+        <img id="pauseButton" src="img/pausewhite.png">
         <div id="main-menu">
             <div id="menu-container">
                 <h1>Main Menu</h1>
@@ -26,6 +22,11 @@
                 <input type="text" id="textInput" placeholder="Text eingeben">
                 <button class = "button" id="speicher-button">Speichern</button>
                 
+                <div id="mode-selection">
+                    <button id="mode-english">English Game</button>
+                    <button id="mode-german">German → English</button>
+                </div>
+                <button id="start-button" style="display: none;">Start</button>
             </div>
         </div>
     </div>

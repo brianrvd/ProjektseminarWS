@@ -12,14 +12,16 @@ body {
 }
 
 #mycanvas {
-    display: none;
+    background-image: url('img/background.png');
 }
 
 /* Wrapper für Canvas + Menü -> sorgt dafür dass der menü sich in canvas befindet  */
 #game-wrapper {
-    position: relative;
+    position: absolute;
     width: 600px;
     height: 700px;
+    display: flex;
+    justify-content: space-between;
 }
 
 #main-menu {
@@ -41,10 +43,10 @@ body {
     display: flex;
     justify-content: center; 
     align-items: center;     
-    background-color: rgba(0,0,0,0.5);
+    /*background-color: rgba(0,0,0,0.5);
     background-image: url('img/background.png');
     background-size: cover;
-    background-position: center;
+    background-position: center;*/
     box-shadow: 0 0 20px rgba(0,0,0,0.5);
     z-index: 10;             /* über Canvas */
 }
@@ -71,7 +73,10 @@ body {
     text-shadow: 2px 2px 5px black;
 }
 
-.button {
+/*.button {*/
+#start-button,
+#mode-english,
+#mode-german {
     padding: 15px 30px;
     font-size: 24px;
     border: none;
@@ -83,7 +88,28 @@ body {
     transition: all 0.2s ease;
 }
 
-.button:hover {
+/*.button:hover {*/
+#start-button:hover,
+#mode-english:hover,
+#mode-german:hover {
     background-color: #45a049;
     transform: scale(1.05);
+}
+
+#mode-selection {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+#pauseButton {
+    opacity: 0.5; 
+    width: 70px;
+    height: 70px;
+}
+
+#pauseButton:hover {
+    opacity: 0.8;
+    transition: 0.2s;
 }
