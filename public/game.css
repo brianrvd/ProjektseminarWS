@@ -71,7 +71,7 @@ body {
     text-shadow: 2px 2px 5px black;
 }
 
-#start-button {
+.button {
     padding: 15px 30px;
     font-size: 24px;
     border: none;
@@ -83,7 +83,7 @@ body {
     transition: all 0.2s ease;
 }
 
-#start-button:hover {
+.button:hover {
     background-color: #45a049;
     transform: scale(1.05);
 }

@@ -15,7 +15,7 @@ module.exports = class Game {
 
     constructor() {
         this.raf                       // request animation frame handle
-        this.elementList = null
+        this.elementList =[]
         this.health = new Health();
 
         this.score = 0 
