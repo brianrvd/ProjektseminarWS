@@ -12,7 +12,12 @@ module.exports = class Word extends Element {
         this.circleId = circleId
         this.speed = speed
         
-        const dictionary = new EnglishGermanDictionary();
+        let dictionary = new EnglishGermanDictionary();
+        if(InputField.Inputlist.length != 0) {
+            dictionary.setWords(InputField.Inputlist);
+            game.gameMode = "ownWords";
+        }
+
         const randomIndex = Math.floor(Math.random() * dictionary.words.length);
         let englishWord = dictionary.words[randomIndex];
         

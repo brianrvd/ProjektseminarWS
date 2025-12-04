@@ -4,8 +4,8 @@ module.exports = class Bullet extends Element {
     constructor(targetX, targetY, targetId, game) {
         super()
         // Startposition: Fest, wie du willst
-        this.x = 270
-        this.y = 520
+        this.x = 300
+        this.y = 465
         
         this.targetX = targetX
         this.targetY = targetY

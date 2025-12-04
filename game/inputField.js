@@ -11,7 +11,7 @@ module.exports =  class InputField {
         InputField.Inputlist.push(...neueWoerter); // am ende ovn inputlist hinzufügen. 
 
         // Ausgabe aktualisieren
-        document.getElementById("output").textContent = JSON.stringify(this.Inputlist, null);
+        // document.getElementById("output").textContent = JSON.stringify(this.Inputlist, null);
     }
     
     static isEmpty(){

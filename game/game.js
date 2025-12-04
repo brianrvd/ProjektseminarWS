@@ -74,7 +74,7 @@ module.exports = class Game {
             if (this.cometesCount >= 10) {
                 stopLoop();
             }
-        }, 3000);
+        }, 5000);
     }
 
     stopGeneratingCometes() {
@@ -92,13 +92,7 @@ module.exports = class Game {
         this.stopGeneratingCometes()
 
         document.getElementById("main-menu").style.display = "flex"
-
-        const startButton = window.document.getElementById("start-button") 
-        startButton.textContent = "Continue"
-        startButton.onclick = () => {
-            document.getElementById("main-menu").style.display = "none"
-            this.continue()
-        }
+        document.getElementById("continue-button").style.display = "flex"
     }
 
     continue() {
@@ -110,16 +104,10 @@ module.exports = class Game {
     gameOver() {
         this.stop();
         this.stopGeneratingCometes()
-        document.getElementById("main-menu").style.display = "flex";    // Menü zeigen 
+        document.getElementById("main-menu").style.display = "flex";
+        document.getElementById("home-button").style.display = "flex";
         this.health = new Health();                                    // leben wieder zurück setzen 
         this.score = 0;
-
-        const startButton = window.document.getElementById("start-button") 
-        startButton.textContent = "Restart"
-        startButton.onclick = () => {
-            document.getElementById("main-menu").style.display = "none" // versteckt das main menü 
-            this.start()
-        }
     }
     //----------------------
 

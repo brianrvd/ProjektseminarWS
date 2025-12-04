@@ -164,6 +164,10 @@ class EnglishGermanDictionary {
     translate(englishWord) {
         return this.translations[englishWord.toLowerCase()] ?? null;
     }
+
+    setWords(newWordList) {
+        this.words = newWordList;
+    }
 }
 
 module.exports = EnglishGermanDictionary;
