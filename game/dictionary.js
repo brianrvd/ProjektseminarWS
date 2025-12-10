@@ -4,7 +4,7 @@ class EnglishGermanDictionary {
         // ---------------------------------------------------------
         // 🔹 1. Englische Wörterliste (NUR English Words)
         // ---------------------------------------------------------
-        this.words = [
+        this.words = [ //liste 1 
             "apple", "animal", "answer", "air", "age", "area", "arm", "ask",
             "always", "anything",
             "baby", "bag", "ball", "bank", "bath", "beach", "bear", "beautiful",
@@ -170,6 +170,10 @@ class EnglishGermanDictionary {
 
     translate(englishWord) {
         return this.translations[englishWord.toLowerCase()] ?? null;
+    }
+
+    setWords(newWordList) {
+        this.words = newWordList;
     }
 }
 

@@ -4,8 +4,6 @@ module.exports = class WordInputHandler{
 
     constructor(){
         this.inputLine= null;
-        
-
         document.addEventListener('keydown', this.handleInput.bind(this));
     }
 
@@ -14,10 +12,11 @@ module.exports = class WordInputHandler{
     }
 
     handleInput(event){
-        if(event.key.length==1 && /[a-zA-Z]/.test(event.key)){
-            //const letter= event.key.toLowerCase();
-            const letter= event.key;
-            
+      //  if(event.key.length==1 && /[a-zA-Z]/.test(event.key)){ // orginale 
+      if (event.key.length === 1 && /\p{L}/u.test(event.key)) { // Alle ASCII regestrierte buchstaben
+
+            const letter= event.key.toLowerCase();
+
             if(this.inputLine){
                 this.inputLine(letter);
             }   

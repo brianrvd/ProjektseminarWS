@@ -2,6 +2,7 @@
 
 const Element = require('./element')
 const EnglishGermanDictionary = require('./dictionary')
+const InputField = require('./inputfield')
 
 module.exports = class Word extends Element {
     constructor(game, x, y, circleId, speed) {
@@ -11,7 +12,12 @@ module.exports = class Word extends Element {
         this.circleId = circleId
         this.speed = speed
         
-        const dictionary = new EnglishGermanDictionary();
+        let dictionary = new EnglishGermanDictionary();
+        if(InputField.Inputlist.length != 0) {
+            dictionary.setWords(InputField.Inputlist);
+            game.gameMode = "ownWords";
+        }
+
         const randomIndex = Math.floor(Math.random() * dictionary.words.length);
         let englishWord = dictionary.words[randomIndex];
         
@@ -61,4 +67,5 @@ module.exports = class Word extends Element {
         this.hasCollided = true
         this.game.elementList.delete(this.instanceId);
     }
+
 }
