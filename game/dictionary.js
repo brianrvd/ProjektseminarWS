@@ -145,7 +145,7 @@ class EnglishGermanDictionary {
             "time": "Zeit", "tired": "müde", "tomorrow": "morgen", "town": "Stadt",
             "tree": "Baum", "train": "Zug", "travel": "reisen",
 
-            "under": "unter", "uncle": "Onkel", "up": "hoch", "use": "benutzen",
+            "under": "unter", "uncle": "Onkel", "up": "oben", "use": "benutzen",
 
             "village": "Dorf", "voice": "Stimme",
 
