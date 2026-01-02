@@ -71,7 +71,7 @@ body {
 #menu-container h1 {
     font-size: 48px;
     color: white;
-    margin-bottom: 60px;     /* Abstand zu Button > vertikal */
+    margin-bottom: 20px;     /* Abstand zu Button > vertikal */
     text-align: center;
     padding: 0 20px;         /* hAbstand zu Button > Horizontal */
     text-shadow: 2px 2px 5px black;
@@ -94,7 +94,7 @@ body {
     transform: scale(1.05);
 }
 
-#input-popup {
+#input-popup, #highscore-popup {
     width: 400px;
     height: fit-content;
     padding: 15px;
@@ -119,13 +119,11 @@ body {
     width: 100%;
 }
 
-#close-input-popup {
-    position: absolute;
-    justify-self: end;
+#close-input-popup, #close-highscore-popup {
     color: white;
 }
 
-#close-input-popup:hover {
+#close-input-popup:hover, #close-highscore-popup:hover {
     cursor: pointer;
 }
 
@@ -147,4 +145,33 @@ body {
 #pauseButton:hover {
     opacity: 0.8;
     transition: 0.2s;
+}
+
+#highscore, #scoreblock {
+    margin: 10px; 
+    color:white; 
+    font-family:Arial; 
+    font-size: 16pt;
+    display: flex;
+    margin-bottom: 30px;
+    flex-direction: column;
+}
+
+#highscore-value, #scoreblock-value {
+    margin-left: 5px;
+}
+
+#scoreblock {
+    display: none;
+}
+
+
+#highscore-list {
+    color: white;
+    margin-left: 15px;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }

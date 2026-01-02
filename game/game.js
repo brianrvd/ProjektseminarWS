@@ -93,11 +93,25 @@ module.exports = class Game {
 
         document.getElementById("main-menu").style.display = "flex"
         document.getElementById("continue-button").style.display = "flex"
+        document.getElementById("mode-selection").style.display = "none";
     }
 
     continue() {
         this.isPaused = false
         this.generateCometes()
+    }
+
+    loadScores() {
+        return JSON.parse(localStorage.getItem("highScores")) || [];
+    }
+
+    saveScore(name, score) {
+        const scores = this.loadScores();
+        scores.push({ name, score, date: Date.now() });
+        scores.sort((a, b) => b.score - a.score);
+        localStorage.setItem("highScores", JSON.stringify(scores.slice(0, 10)));
+        
+        document.getElementById("highscore-value").textContent = scores[0].score;
     }
 
     // menü nach tod einblinden 
@@ -106,8 +120,13 @@ module.exports = class Game {
         this.stopGeneratingCometes()
         document.getElementById("main-menu").style.display = "flex";
         document.getElementById("home-button").style.display = "flex";
+        document.getElementById("mode-selection").style.display = "none";
+        document.getElementById("scoreblock").style.display = "flex";
+        document.getElementById("scoreblock-value").textContent = this.score;
         this.health = new Health();                                    // leben wieder zurück setzen 
         this.score = 0;
+        this.updateUI();
+        window.document.getElementById("join-highscore").disabled = false;
     }
     //----------------------
 

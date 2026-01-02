@@ -16,14 +16,32 @@
         </div>
         <img id="pauseButton" src="img/pausewhite.png">
         <div id="input-popup">
-            <div id="close-input-popup"><h2>X</h2></div>
-            <h2 style="color: white; padding-bottom: 5px;">Input Your Own Words</h2>
-            <textarea type="text" id="textInput" placeholder="Text eingeben"></textarea>
+            <div style="display: flex; justify-content: space-between;">
+                <h2 style="color: white; padding-bottom: 5px;">Input Your Own Words</h2>
+                <div id="close-input-popup"><h2>X</h2></div>
+            </div>
+            <textarea type="text" id="textInput" placeholder="Input your Text"></textarea>
             <button class = "button" id="speicher-button">Speichern</button>
+        </div>
+        <div id="highscore-popup">
+            <div style="display: flex; justify-content: space-between;">
+                <h2 style="color: white; padding-bottom: 5px;">High Scores</h2>
+                <div id="close-highscore-popup"><h2>X</h2></div>
+            </div>
+            <ol id="highscore-list"></ol>
         </div>
         <div id="main-menu">
             <div id="menu-container">
-                <h1>Main Menu</h1>
+                <h1>Menu</h1>
+                <div id="highscore">
+                    <div style="display: flex; margin-bottom: 10px; justify-content: center;">Highscore: <div id="highscore-value">0</div></div>
+                    <button class="button" id="highscore-button" style="padding: 5px; font-size: 12pt;">Highscore List</button>
+                </div>
+                <div id="scoreblock">
+                    <div style="display: flex; margin-bottom: 10px; justify-content: center;">Your Score: <div id="scoreblock-value">0</div></div>
+                    <input type="text" id="nameInput" placeholder="Input your Name" style="padding: 10px; margin-bottom: 5px;">
+                    <button class="button" id="join-highscore" style="padding: 5px; font-size: 12pt;">Join the Highscore List</button>
+                </div>
                 <div id="mode-selection">
                     <button class="button" id="mode-english">English Game</button>
                     <button class="button" id="mode-german">German → English</button>
