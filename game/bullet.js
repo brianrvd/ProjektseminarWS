@@ -4,8 +4,8 @@ module.exports = class Bullet extends Element {
     constructor(targetX, targetY, targetId, game) {
         super()
         // Startposition: Fest, wie du willst
-        this.x = 300
-        this.y = 465
+        this.x = 311
+        this.y = 472
         
         this.targetX = targetX
         this.targetY = targetY
@@ -23,13 +23,13 @@ module.exports = class Bullet extends Element {
 
     draw(ctx) {
         if (this.hasCollided) return
-        ctx.fillStyle = '#ff0'
+        ctx.fillStyle = 'rgba(255, 17, 0, 1)'
         ctx.beginPath()
         ctx.arc(this.x, this.y, 5, 0, Math.PI * 2)
         ctx.fill()
         
         ctx.shadowBlur = 10
-        ctx.shadowColor = '#ff0'
+        ctx.shadowColor = 'rgba(226, 47, 11, 1)'
         ctx.fill()
         ctx.shadowBlur = 0
     }

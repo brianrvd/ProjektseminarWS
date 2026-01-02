@@ -5,8 +5,8 @@ module.exports = class Bullet extends Element {
     constructor(targetX, targetY, targetId, game) {
         super()
         // Startposition: Fest, wie du willst
-        this.x = 311
-        this.y = 472
+        this.x = 300
+        this.y = 465
         
         this.targetX = targetX
         this.targetY = targetY
@@ -24,13 +24,13 @@ module.exports = class Bullet extends Element {
 
     draw(ctx) {
         if (this.hasCollided) return
-        ctx.fillStyle = 'rgba(255, 17, 0, 1)'
+        ctx.fillStyle = '#ff0'
         ctx.beginPath()
         ctx.arc(this.x, this.y, 5, 0, Math.PI * 2)
         ctx.fill()
         
         ctx.shadowBlur = 10
-        ctx.shadowColor = 'rgba(226, 47, 11, 1)'
+        ctx.shadowColor = '#ff0'
         ctx.fill()
         ctx.shadowBlur = 0
     }
@@ -751,7 +751,7 @@ module.exports = class Health extends Element {
 
     constructor() {  
         super()            
-        this.health = 3;
+        this.health = 10;
         this.heart = new Image();
         this.heart.src = 'img/heart.png';
 
@@ -761,6 +761,7 @@ module.exports = class Health extends Element {
         };
     }
     
+
     draw(ctx){
         if (!this.loaded) return;                          //wenn das bild geladen ist sollte es die herzen zeichnen
         let x = 10;
@@ -789,7 +790,6 @@ module.exports = class Health extends Element {
     }
          */ 
 }
-
 },{"./element":4}],8:[function(require,module,exports){
 "use strict"
 
@@ -879,7 +879,7 @@ window.onload = () => {
         document.getElementById("continue-button").style.display = "none"
         myGame.continue()
     }
-
+21
     homeButton.onclick = () => {
         document.getElementById("mode-selection").style.display = "flex"
         document.getElementById("home-button").style.display = "none"
@@ -927,14 +927,14 @@ module.exports = class RandomWalkCircleElement extends Element {
         this.game = game
         this.x = Math.random() * 530 + 40
         this.y = 0
-        this.speed = 0.7
+        this.speed = 5
         this.radius = 15;
 
          this.imageOptions = [
-            { src: 'img/meteor1.png', probability: 0.1 },   // 40% Wahrscheinlichkeit
-            { src: 'img/meteor2.png', probability: 0.2 },  // 25% Wahrscheinlichkeit
-            { src: 'img/meteor3.png', probability: 0.4 },   // 20% Wahrscheinlichkeit
-            { src: 'img/meteor4.png', probability: 0.25 },   // 10% Wahrscheinlichkeit
+            { src: 'img/meteor1.png', probability: 0.4 },   // 40% Wahrscheinlichkeit
+            { src: 'img/meteor2.png', probability: 0.25 },  // 25% Wahrscheinlichkeit
+            { src: 'img/meteor3.png', probability: 0.2 },   // 20% Wahrscheinlichkeit
+            { src: 'img/meteor4.png', probability: 0.1 },   // 10% Wahrscheinlichkeit
             { src: 'img/meteor5.png', probability: 0.05 }   // 5% Wahrscheinlichkeit
         ];
 
@@ -972,7 +972,7 @@ module.exports = class RandomWalkCircleElement extends Element {
             ctx.beginPath()
             ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true)
             ctx.closePath()
-            
+
             ctx.clip();
             ctx.drawImage( //bild in kreis zentrieren 
                 this.bild,
@@ -1036,7 +1036,7 @@ module.exports = class RegenerateBoss extends RandomWalkCircleElement {
         this.radius = 30;
 
         this.boss1 = new Image();
-        this.boss1.src = 'img/heart.png'; //placeholder
+        this.boss1.src = 'img/heart.png'; 
         
 
     }
@@ -1095,7 +1095,7 @@ const Word = require('./word')
 
 module.exports = class SpawnerBoss extends RandomWalkCircleElement {
 
-    /*constructor(game) {
+    constructor(game) {
         super(game)
         this.x = 300;
         this.speed = 0.2
@@ -1107,30 +1107,6 @@ module.exports = class SpawnerBoss extends RandomWalkCircleElement {
         this.spawnInterval = 5000  // spawn every x seconds
         this.lastSpawnTime = Date.now();
         
-    }*/
-    constructor(game) {
-        super(game)
-        this.speed = 0.2
-            
-        this.spawnAtRandomPosition(); // Zufällige Startposition
-        this.spawnInterval = this.getRandomSpawnInterval();
-        this.lastSpawnTime = Date.now();
-    }
-
-    spawnAtRandomPosition() {
-        // Zufällige X-Position 
-        this.x = Math.random() * 400 + 100;
-        this.y = 0; 
-    }
-
-    startSpawning() {
-        const currentTime = Date.now();
-        if(currentTime - this.lastSpawnTime >= this.spawnInterval){
-            this.spawn();
-            this.lastSpawnTime = currentTime;
-            this.spawnInterval = this.getRandomSpawnInterval();
-            this.spawnAtRandomPosition(); 
-        }       
     }
 
      draw(ctx) {
@@ -1184,24 +1160,25 @@ module.exports = class Stage extends Element {
 
     constructor() {
         super()
-        this.background = new Image()
-        this.loaded = false
-
-        this.background.onload = () => {
-            this.loaded = true
-        }
-
-        this.background.src = 'img/neueHintergrund.png'
+        this.x = 0
+        this.y = 0
     }
 
     draw(ctx) {
-        if (!this.loaded) return
-        const canvas = ctx.canvas
-        ctx.drawImage(
-            this.background,0,0,canvas.width,canvas.height)
+        var background = new Image();
+        var player = new Image();
+        background.onload = function() {
+            ctx.drawImage(background, 0, 0);
+            ctx.drawImage(player,200, 365);
+        }
+        background.src = 'img/h1.png';
+        player.src = 'img/Player 1.png';
+    }
+
+    action() {
+        
     }
 }
-
 },{"./element":4}],14:[function(require,module,exports){
 module.exports = class Validator {
 

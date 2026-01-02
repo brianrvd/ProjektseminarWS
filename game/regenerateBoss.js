@@ -11,17 +11,38 @@ module.exports = class RegenerateBoss extends RandomWalkCircleElement {
         this.x = 300;
         this.speed = 0.2
         this.health = health;
-       
+        this.radius = 30;
+
+        this.boss1 = new Image();
+        this.boss1.src = 'img/heart.png'; //placeholder
+        
 
     }
 
     draw(ctx) {
+        ctx.save();
+            
+            ctx.beginPath()
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true)
+            ctx.closePath()
+
+            ctx.clip();
+            ctx.drawImage( //bild in kreis zentrieren 
+                this.bild,
+                this.x - this.radius,
+                this.y - this.radius,
+                this.radius * 2,
+                this.radius * 2
+            );
+            ctx.restore();
+        /*
         ctx.beginPath()
-            ctx.arc(this.x, this.y, 30, 0, Math.PI * 2, true)
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true)
             ctx.closePath()
             
             ctx.fillStyle =  "black"
             ctx.fill()
+            */
     }
 
     bulletMet() {

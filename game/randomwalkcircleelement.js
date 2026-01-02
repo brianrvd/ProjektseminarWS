@@ -12,21 +12,65 @@ module.exports = class RandomWalkCircleElement extends Element {
         this.x = Math.random() * 530 + 40
         this.y = 0
         this.speed = 0.7
+        this.radius = 15;
+
+         this.imageOptions = [
+            { src: 'img/meteor1.png', probability: 0.1 },   // 40% Wahrscheinlichkeit
+            { src: 'img/meteor2.png', probability: 0.2 },  // 25% Wahrscheinlichkeit
+            { src: 'img/meteor3.png', probability: 0.4 },   // 20% Wahrscheinlichkeit
+            { src: 'img/meteor4.png', probability: 0.25 },   // 10% Wahrscheinlichkeit
+            { src: 'img/meteor5.png', probability: 0.05 }   // 5% Wahrscheinlichkeit
+        ];
+
+        this.bild = new Image();
+        this.bild.src = this.selectRandomImage();
         
         setTimeout(() => { 
             let word = new Word(this.game, this.x, this.y, this.instanceId, this.speed)
             this.game.elementList.add(word)
         }, 100);
-        
     }
 
+    selectRandomImage() {
+        const random = Math.random();
+        let cumulativeProbability = 0;
+        
+        for (const option of this.imageOptions) {
+            cumulativeProbability += option.probability;
+            if (random <= cumulativeProbability) {
+                return option.src;
+            }
+        }
+        
+        // Fallback auf erstes Bild, falls etwas schief geht
+        return this.imageOptions[0].src;
+        
+    }
+        
+    
+
     draw(ctx) {
+      //if (!this.img.complete) return;//
+            ctx.save();
+
             ctx.beginPath()
-            ctx.arc(this.x, this.y, 15, 0, Math.PI * 2, true)
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true)
             ctx.closePath()
             
+            ctx.clip();
+            ctx.drawImage( //bild in kreis zentrieren 
+                this.bild,
+                this.x - this.radius,
+                this.y - this.radius,
+                this.radius * 2,
+                this.radius * 2
+            );
+            ctx.restore();
+            
+            /*
             ctx.fillStyle =  "grey"
             ctx.fill()
+            */
 
     }
 

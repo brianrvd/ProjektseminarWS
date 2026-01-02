@@ -17,23 +17,17 @@ module.exports = class Health extends Element {
         };
     }
     
-
     draw(ctx){
         if (!this.loaded) return;                          //wenn das bild geladen ist sollte es die herzen zeichnen
-        
-        if (this.health >= 1) {
-            ctx.drawImage(this.heart, 10,30,25,25);
-        }
-        if (this.health >= 2) {
-            ctx.drawImage(this.heart, 40,30,25,25);
-        }
-        if (this.health >= 3) {
-            ctx.drawImage(this.heart, 70,30,25,25);
+        let x = 10;
+        for(let i=0; i<this.health;i++){
+            ctx.drawImage(this.heart,x,30,25,25);
+            x+=30;
         }
     }
-
-
-
+    addHealth(){
+        this.health++;
+    }
     reduce(){
        this.health--;
     }

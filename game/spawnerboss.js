@@ -8,7 +8,7 @@ const Word = require('./word')
 
 module.exports = class SpawnerBoss extends RandomWalkCircleElement {
 
-    constructor(game) {
+    /*constructor(game) {
         super(game)
         this.x = 300;
         this.speed = 0.2
@@ -20,6 +20,30 @@ module.exports = class SpawnerBoss extends RandomWalkCircleElement {
         this.spawnInterval = 5000  // spawn every x seconds
         this.lastSpawnTime = Date.now();
         
+    }*/
+    constructor(game) {
+        super(game)
+        this.speed = 0.2
+            
+        this.spawnAtRandomPosition(); // Zufällige Startposition
+        this.spawnInterval = this.getRandomSpawnInterval();
+        this.lastSpawnTime = Date.now();
+    }
+
+    spawnAtRandomPosition() {
+        // Zufällige X-Position 
+        this.x = Math.random() * 400 + 100;
+        this.y = 0; 
+    }
+
+    startSpawning() {
+        const currentTime = Date.now();
+        if(currentTime - this.lastSpawnTime >= this.spawnInterval){
+            this.spawn();
+            this.lastSpawnTime = currentTime;
+            this.spawnInterval = this.getRandomSpawnInterval();
+            this.spawnAtRandomPosition(); 
+        }       
     }
 
      draw(ctx) {

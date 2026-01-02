@@ -12,11 +12,14 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgb(103, 152, 178);
+    background-color: rgb(20, 129, 146);
 }
 
 #mycanvas {
-    background-image: url('img/background.png');
+    background-image: url('img/neueHintergrund.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 /* Wrapper für Canvas + Menü -> sorgt dafür dass der menü sich in canvas befindet  */

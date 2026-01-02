@@ -11,6 +11,7 @@ const WordInputHandler = require('./wordinputhandler')
 const Health = require("./health")
 const SpawnerBoss = require("./spawnerboss")
 const RegenerateBoss = require("./regenerateBoss")
+const main = require("./main")
 
 
 module.exports = class Game {
@@ -60,6 +61,21 @@ module.exports = class Game {
 
         this.timeOfLastFrame = Date.now()
         this.raf = window.requestAnimationFrame(this.tick.bind(this))
+
+        window.addEventListener("keydown", (e) => {
+            if(e.key === "Escape"){
+                if (!this.isPaused) {
+                    this.pause();
+                    
+                }
+                /*
+                    else if(this.isPaused){
+                    main.document.getElementById("main-menu").style.display = "none"
+                    main.document.getElementById("continue-button").style.display = "none"
+                    this.continue()
+                }*/
+            }
+        });
       
     }
 
@@ -137,7 +153,9 @@ module.exports = class Game {
         //--- clear screen
         //ctx.fillStyle = 'rgba(235, 250, 255, 0.1)' // alpha < 1 löscht den Bildschrim nur teilweise -> bewegte Gegenstände erzeugen Spuren
         //ctx.fillRect(0, 0, mycanvas.clientWidth, mycanvas.clientHeight)
+        
 
+        
         if(!document.hasFocus()) {
             this.pause()
         }
