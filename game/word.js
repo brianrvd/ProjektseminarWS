@@ -42,13 +42,27 @@ module.exports = class Word extends Element {
             }
         }
         
-        this.x = x - this.displayWord.length*8/2
+        this.x = x - document.getElementById("mycanvas").getContext('2d').measureText(this.displayWord).width / 2 //this.displayWord.length*8/2
         this.y = y + 30
     }
 
     draw(ctx) {
-        ctx.fillStyle = "white"
-        ctx.fillText(this.displayWord, this.x, this.y);
+        let currentInput = document.getElementById("current-input")
+        if(currentInput.textContent.at(0) == this.displayWord.at(0)) {
+            let currentInputLength = currentInput.textContent.length
+            const firstPart = this.displayWord.slice(0, currentInputLength);
+            const restPart  = this.displayWord.slice(currentInputLength);
+            const typedTextWidth = ctx.measureText(firstPart).width;
+
+            ctx.fillStyle = "grey";
+            ctx.fillText(firstPart, this.x, this.y);
+            
+            ctx.fillStyle = "white"
+            ctx.fillText(restPart, this.x + typedTextWidth, this.y);
+        } else {
+            ctx.fillStyle = "white"
+            ctx.fillText(this.displayWord, this.x, this.y);
+        }
     }
 
     action() {

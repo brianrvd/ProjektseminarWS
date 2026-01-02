@@ -396,22 +396,21 @@ module.exports = class Game {
     cometesCount = 0
 
     constructor() {
-        this.raf                       // request animation frame handle
-        this.elementList =[]
+        this.raf;                       // request animation frame handle
+        this.elementList =[];
         this.health = new Health();
 
-        this.score = 0 
-        this.currentInput = ''
+        this.score = 0;
+        this.currentInput = '';
         // Änderungen von Brian
         this.validator = new Validator();
         this.wordInputhander = new WordInputHandler();
         this.activeWordElement = null;
         this.wordInputhander.setLetterCallback(this.handleLetterInput.bind(this));
-        this.isInputSet = false
-        this.isPaused = false
-        this.lastBossScore = 0
+        this.isInputSet = false;
+        this.isPaused = false;
+        this.lastBossScore = 0;
         this.bossActive = false;
-
     }
 
     //----------------------
@@ -653,7 +652,7 @@ findNewWord(firstLetter) {
             }
             } else {
                 // Falscher Buchstabe - Reset
-                this.resetActiveWord();
+                this.resetActiveWord(true);
         }
     }
 
@@ -675,9 +674,15 @@ findNewWord(firstLetter) {
     }
 
     // Aktives Wort zurücksetzen
-    resetActiveWord() {
-    this.activeWordElement = null;
-    this.currentInput = '';
+    resetActiveWord(mistake) {
+        this.activeWordElement = null;
+        this.currentInput = '';
+        if(mistake) {
+            document.getElementById("redScreen").style.opacity = "0.5";
+            setTimeout(() => {
+                document.getElementById("redScreen").style.opacity = "0";
+            }, 300); 
+        }
     }
 
     // Prüfe in jedem Frame ob aktives Wort noch existiert
@@ -1194,13 +1199,27 @@ module.exports = class Word extends Element {
             }
         }
         
-        this.x = x - this.displayWord.length*8/2
+        this.x = x - document.getElementById("mycanvas").getContext('2d').measureText(this.displayWord).width / 2 //this.displayWord.length*8/2
         this.y = y + 30
     }
 
     draw(ctx) {
-        ctx.fillStyle = "white"
-        ctx.fillText(this.displayWord, this.x, this.y);
+        let currentInput = document.getElementById("current-input")
+        if(currentInput.textContent.at(0) == this.displayWord.at(0)) {
+            let currentInputLength = currentInput.textContent.length
+            const firstPart = this.displayWord.slice(0, currentInputLength);
+            const restPart  = this.displayWord.slice(currentInputLength);
+            const typedTextWidth = ctx.measureText(firstPart).width;
+
+            ctx.fillStyle = "grey";
+            ctx.fillText(firstPart, this.x, this.y);
+            
+            ctx.fillStyle = "white"
+            ctx.fillText(restPart, this.x + typedTextWidth, this.y);
+        } else {
+            ctx.fillStyle = "white"
+            ctx.fillText(this.displayWord, this.x, this.y);
+        }
     }
 
     action() {

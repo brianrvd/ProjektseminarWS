@@ -175,3 +175,14 @@ button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+#redScreen {
+    display: flex;
+    position: absolute;
+    width: 600px;
+    height: 700px;
+    background-color: red;
+    opacity: 0;
+    transition: 0.1s;
+    justify-self: center;
+}
