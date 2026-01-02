@@ -6,7 +6,9 @@ let myGame = new Game()
 
 // canvas
 window.onload = () => {
-    document.getElementById("highscore-value").textContent = myGame.loadScores()[0].score;
+    if(myGame.loadScores().length != 0) {
+        document.getElementById("highscore-value").textContent = myGame.loadScores()[0].score;
+    }
     const ownWordsButton = window.document.getElementById("own-words");
     const speicherButton = window.document.getElementById("speicher-button"); 
     const modeEnglishButton = document.getElementById("mode-english");
