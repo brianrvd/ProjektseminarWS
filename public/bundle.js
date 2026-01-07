@@ -396,22 +396,21 @@ module.exports = class Game {
     cometesCount = 0
 
     constructor() {
-        this.raf                       // request animation frame handle
-        this.elementList =[]
+        this.raf;                       // request animation frame handle
+        this.elementList =[];
         this.health = new Health();
 
-        this.score = 0 
-        this.currentInput = ''
+        this.score = 0;
+        this.currentInput = '';
         // Änderungen von Brian
         this.validator = new Validator();
         this.wordInputhander = new WordInputHandler();
         this.activeWordElement = null;
         this.wordInputhander.setLetterCallback(this.handleLetterInput.bind(this));
-        this.isInputSet = false
-        this.isPaused = false
-        this.lastBossScore = 0
+        this.isInputSet = false;
+        this.isPaused = false;
+        this.lastBossScore = 0;
         this.bossActive = false;
-
     }
 
     //----------------------
@@ -470,11 +469,25 @@ module.exports = class Game {
 
         document.getElementById("main-menu").style.display = "flex"
         document.getElementById("continue-button").style.display = "flex"
+        document.getElementById("mode-selection").style.display = "none";
     }
 
     continue() {
         this.isPaused = false
         this.generateCometes()
+    }
+
+    loadScores() {
+        return JSON.parse(localStorage.getItem("highScores")) || [];
+    }
+
+    saveScore(name, score) {
+        const scores = this.loadScores();
+        scores.push({ name, score, date: Date.now() });
+        scores.sort((a, b) => b.score - a.score);
+        localStorage.setItem("highScores", JSON.stringify(scores.slice(0, 10)));
+        
+        document.getElementById("highscore-value").textContent = scores[0].score;
     }
 
     // menü nach tod einblinden 
@@ -483,8 +496,13 @@ module.exports = class Game {
         this.stopGeneratingCometes()
         document.getElementById("main-menu").style.display = "flex";
         document.getElementById("home-button").style.display = "flex";
+        document.getElementById("mode-selection").style.display = "none";
+        document.getElementById("scoreblock").style.display = "flex";
+        document.getElementById("scoreblock-value").textContent = this.score;
         this.health = new Health();                                    // leben wieder zurück setzen 
         this.score = 0;
+        this.updateUI();
+        window.document.getElementById("join-highscore").disabled = false;
     }
     //----------------------
 
@@ -634,7 +652,7 @@ findNewWord(firstLetter) {
             }
             } else {
                 // Falscher Buchstabe - Reset
-                this.resetActiveWord();
+                this.resetActiveWord(true);
         }
     }
 
@@ -656,9 +674,15 @@ findNewWord(firstLetter) {
     }
 
     // Aktives Wort zurücksetzen
-    resetActiveWord() {
-    this.activeWordElement = null;
-    this.currentInput = '';
+    resetActiveWord(mistake) {
+        this.activeWordElement = null;
+        this.currentInput = '';
+        if(mistake) {
+            document.getElementById("redScreen").style.opacity = "0.5";
+            setTimeout(() => {
+                document.getElementById("redScreen").style.opacity = "0";
+            }, 300); 
+        }
     }
 
     // Prüfe in jedem Frame ob aktives Wort noch existiert
@@ -785,14 +809,20 @@ let myGame = new Game()
 
 // canvas
 window.onload = () => {
-    const ownWordsButton = window.document.getElementById("own-words") 
-    const speicherButton = window.document.getElementById("speicher-button") 
+    if(myGame.loadScores().length != 0) {
+        document.getElementById("highscore-value").textContent = myGame.loadScores()[0].score;
+    }
+    const ownWordsButton = window.document.getElementById("own-words");
+    const speicherButton = window.document.getElementById("speicher-button"); 
     const modeEnglishButton = document.getElementById("mode-english");
     const modeGermanButton = document.getElementById("mode-german");
     const pauseButton = window.document.getElementById("pauseButton");
     const closeInputPopup = window.document.getElementById("close-input-popup");
+    const closeHighscorePopup = window.document.getElementById("close-highscore-popup");
     const continueButton = window.document.getElementById("continue-button");
     const homeButton = window.document.getElementById("home-button");
+    const showHighScoreListButton = window.document.getElementById("highscore-button");
+    const joinHighScoreButton = window.document.getElementById("join-highscore");
     
     ownWordsButton.onclick = () => {
         document.getElementById("input-popup").style.display = "block";
@@ -821,12 +851,14 @@ window.onload = () => {
     
     pauseButton.onclick = function() { 
         myGame.pause(); 
-        document.getElementById("mode-selection").style.display = "none";
-        document.getElementById("start-button").style.display = "block";
     }
 
     closeInputPopup.onclick = () => {
         document.getElementById("input-popup").style.display = "none";
+    }
+
+    closeHighscorePopup.onclick = () => {
+        document.getElementById("highscore-popup").style.display = "none";
     }
 
     continueButton.onclick = () => {
@@ -838,6 +870,33 @@ window.onload = () => {
     homeButton.onclick = () => {
         document.getElementById("mode-selection").style.display = "flex"
         document.getElementById("home-button").style.display = "none"
+        document.getElementById("scoreblock").style.display = "none"
+    }
+
+    showHighScoreListButton.onclick = () => {
+        const list = document.getElementById("highscore-list");
+        const scores = myGame.loadScores();
+
+        document.getElementById("highscore-popup").style.display = "flex";
+        list.innerHTML = ""; // clear old entries
+
+        if (scores.length === 0) {
+            const li = document.createElement("li");
+            li.textContent = "No scores yet!";
+            list.appendChild(li);
+            return;
+        }
+
+        scores.forEach(({ name, score }) => {
+            const li = document.createElement("li");
+            li.textContent = `${name} – ${score}`;
+            list.appendChild(li);
+        });
+    }
+
+    joinHighScoreButton.onclick = () => {
+        myGame.saveScore(document.getElementById('nameInput').value, document.getElementById('scoreblock-value').textContent);
+        joinHighScoreButton.disabled = true;
     }
 };
 
@@ -1142,13 +1201,27 @@ module.exports = class Word extends Element {
             }
         }
         
-        this.x = x - this.displayWord.length*8/2
+        this.x = x - document.getElementById("mycanvas").getContext('2d').measureText(this.displayWord).width / 2 //this.displayWord.length*8/2
         this.y = y + 30
     }
 
     draw(ctx) {
-        ctx.fillStyle = "white"
-        ctx.fillText(this.displayWord, this.x, this.y);
+        let currentInput = document.getElementById("current-input")
+        if(currentInput.textContent.at(0) == this.displayWord.at(0)) {
+            let currentInputLength = currentInput.textContent.length
+            const firstPart = this.displayWord.slice(0, currentInputLength);
+            const restPart  = this.displayWord.slice(currentInputLength);
+            const typedTextWidth = ctx.measureText(firstPart).width;
+
+            ctx.fillStyle = "grey";
+            ctx.fillText(firstPart, this.x, this.y);
+            
+            ctx.fillStyle = "white"
+            ctx.fillText(restPart, this.x + typedTextWidth, this.y);
+        } else {
+            ctx.fillStyle = "white"
+            ctx.fillText(this.displayWord, this.x, this.y);
+        }
     }
 
     action() {
