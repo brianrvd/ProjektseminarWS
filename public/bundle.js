@@ -416,6 +416,9 @@ module.exports = class Game {
     //----------------------
 
     start() {
+        this.isPaused = false;
+        this.activeWordElement = null;
+        this.currentInput = "";
         this.elementList = new ElementList()
         if(!this.isInputSet) {
             this.isInputSet = true
@@ -469,6 +472,7 @@ module.exports = class Game {
 
         document.getElementById("main-menu").style.display = "flex"
         document.getElementById("continue-button").style.display = "flex"
+        document.getElementById("exit-button").style.display = "flex"
         document.getElementById("mode-selection").style.display = "none";
     }
 
@@ -820,6 +824,7 @@ window.onload = () => {
     const closeInputPopup = window.document.getElementById("close-input-popup");
     const closeHighscorePopup = window.document.getElementById("close-highscore-popup");
     const continueButton = window.document.getElementById("continue-button");
+    const exitButton = window.document.getElementById("exit-button");
     const homeButton = window.document.getElementById("home-button");
     const showHighScoreListButton = window.document.getElementById("highscore-button");
     const joinHighScoreButton = window.document.getElementById("join-highscore");
@@ -864,8 +869,26 @@ window.onload = () => {
     continueButton.onclick = () => {
         document.getElementById("main-menu").style.display = "none"
         document.getElementById("continue-button").style.display = "none"
+        document.getElementById("exit-button").style.display = "none"
         myGame.continue()
     }
+
+    exitButton.onclick = () => {
+    // Spiel wirklich stoppen
+    myGame.stopGeneratingCometes();
+    myGame.stop();
+
+    document.getElementById("main-menu").style.display = "flex";
+    document.getElementById("mode-selection").style.display = "flex";
+
+    document.getElementById("continue-button").style.display = "none";
+    document.getElementById("exit-button").style.display = "none";
+    document.getElementById("home-button").style.display = "none";
+    document.getElementById("scoreblock").style.display = "none";
+
+    }
+
+    
 
     homeButton.onclick = () => {
         document.getElementById("mode-selection").style.display = "flex"
@@ -1285,3 +1308,6 @@ module.exports = class WordInputHandler{
     }*/
 }
 },{}]},{},[9]);
+
+
+

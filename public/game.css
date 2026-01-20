@@ -186,3 +186,8 @@ button:disabled {
     transition: 0.1s;
     justify-self: center;
 }
+
+#exit-button {
+  margin-top: 12px;  
+}
+
