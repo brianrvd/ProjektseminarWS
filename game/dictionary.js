@@ -111,6 +111,7 @@ class EnglishGermanDictionary {
 
             "machine": "Maschine", "make": "machen", "man": "Mann", "many": "viele",
             "milk": "Milch", "minute": "Minute", "money": "Geld",
+            "month": "Monat", "morning": "Morgen", "mother": "Mutter", "mountain": "Berg",
             "month": "Monat", "morning": "Morgen", "mother": "Mutter",
             "mountain": "Berg",
 
@@ -138,6 +139,10 @@ class EnglishGermanDictionary {
             "slow": "langsam", "small": "klein", "smile": "Lächeln", "snow": "Schnee",
             "son": "Sohn", "sound": "Geräusch", "soup": "Suppe", "sport": "Sport",
             "spring": "Frühling", "star": "Stern", "stone": "Stein", "street": "Straße",
+            "slow": "langsam", "small": "klein", "smile": "Lächeln",
+            "snow": "Schnee", "son": "Sohn", "sound": "Geräusch",
+            "soup": "Suppe", "sport": "Sport", "spring": "Frühling",
+            "star": "Stern", "stone": "Stein", "street": "Straße",
             "strong": "stark", "summer": "Sommer", "sun": "Sonne", "sweet": "süß",
 
             "table": "Tisch", "teacher": "Lehrer", "tea": "Tee", "team": "Team",
@@ -151,6 +156,8 @@ class EnglishGermanDictionary {
 
             "walk": "gehen", "warm": "warm", "water": "Wasser", "way": "Weg",
             "week": "Woche", "welcome": "willkommen", "white": "weiß",
+            "window": "Fenster", "wind": "Wind", "winter": "Winter", "woman": "Frau",
+            "word": "Wort", "work": "Arbeit", "world": "Welt", "write": "schreiben",
             "window": "Fenster", "wind": "Wind", "winter": "Winter",
             "woman": "Frau", "word": "Wort", "work": "Arbeit", "world": "Welt",
             "write": "schreiben",
