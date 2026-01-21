@@ -11,8 +11,8 @@ const WordInputHandler = require('./wordinputhandler')
 const Health = require("./health")
 const SpawnerBoss = require("./spawnerboss")
 const RegenerateBoss = require("./regenerateBoss")
-
-
+const SplitterBoss = require("./splitterBoss")
+const AudioManager = require("./audioManager")
 module.exports = class Game {
 
     intervalId = 0
@@ -34,6 +34,10 @@ module.exports = class Game {
         this.isPaused = false;
         this.lastBossScore = 0;
         this.bossActive = false;
+        this.audioManager = new AudioManager();
+        this.generateInterval = 5000; 
+        this.lastUpdateSore = 0;
+        
     }
 
     //----------------------
@@ -73,7 +77,17 @@ module.exports = class Game {
             if (this.cometesCount >= 10) {
                 stopLoop();
             }
-        }, 5000);
+        }, this.generateInterval);
+    }
+
+    updateGenerateInterval() {
+        if(this.score >0 && this.score % 5 == 0&&this.generateInterval > 1000 && this.lastUpdateSore != this.score) {
+            this.lastUpdateSore = this.score;
+            this.generateInterval -= 100;
+            clearInterval(this.intervalId);
+            this.generateCometes();
+        }
+        
     }
 
     stopGeneratingCometes() {
@@ -115,6 +129,7 @@ module.exports = class Game {
 
     // menü nach tod einblinden 
     gameOver() {
+       
         this.stop();
         this.stopGeneratingCometes()
         document.getElementById("main-menu").style.display = "flex";
@@ -126,6 +141,7 @@ module.exports = class Game {
         this.score = 0;
         this.updateUI();
         window.document.getElementById("join-highscore").disabled = false;
+        
     }
     //----------------------
 
@@ -158,8 +174,12 @@ module.exports = class Game {
         // Spieler tod ? 
         if (this.health.isDead()) {
             this.gameOver();
+            this.audioManager.stopSound('background');
+            this.audioManager.playSound('gameOver');
             return;
         }
+        this.updateGenerateInterval();
+        this.setBossInactive2();
 
         this.updateUI()
 
@@ -305,42 +325,78 @@ findNewWord(firstLetter) {
             setTimeout(() => {
                 document.getElementById("redScreen").style.opacity = "0";
             }, 300); 
+
+            if (this.audioManager) {
+            this.audioManager.playSound('error')
+        }
         }
     }
 
     // Prüfe in jedem Frame ob aktives Wort noch existiert
-checkActiveWordValidity() {
-    if (this.activeWordElement) {
-        let wordStillExists = false;
+    checkActiveWordValidity() {
+        if (this.activeWordElement) {
+            let wordStillExists = false;
         
-        // Durchsuche die ElementList manuell
-        for (let i = 0; i < this.elementList.length; i++) {
-            const el = this.elementList[i];
-            if (el === this.activeWordElement && !el.hasCollided) {
-                wordStillExists = true;
-                break;
+            // Durchsuche die ElementList manuell
+            for (let i = 0; i < this.elementList.length; i++) {
+                const el = this.elementList[i];
+                if (el === this.activeWordElement && !el.hasCollided) {
+                    wordStillExists = true;
+                    break;
+                }
+            }
+        
+            if (!wordStillExists) {
+            
+                this.resetActiveWord();
             }
         }
-        
-        if (!wordStillExists) {
-            
-            this.resetActiveWord();
-        }
     }
-}
+
+
+
 spawnBoss() {
     if(this.bossActive){
         return;
     }
-    if(this.score > 0 && this.score % 2 === 0 && this.score !== this.lastBossScore) {
+    if(this.score > 0 && this.score % 20 === 0 && this.score !== this.lastBossScore) {
         this.lastBossScore = this.score;
         this.bossActive = true;
-        //this.elementList.add(new SpawnerBoss(this));
-        this.elementList.add(new RegenerateBoss(this));
+        
+        if(this.score  < 30){
+            this.elementList.add(new SplitterBoss(this));
+            //this.elementList.add(new SpawnerBoss(this));
+            //this.elementList.add(new RegenerateBoss(this));
+        }else if(this.score  < 60){
+             //this.elementList.add(new SplitterBoss(this));
+            //this.elementList.add(new SpawnerBoss(this));
+            this.elementList.add(new RegenerateBoss(this)); 
+        }else{
+            this.elementList.add(new SplitterBoss(this));
+            //this.elementList.add(new SpawnerBoss(this));
+            //this.elementList.add(new RegenerateBoss(this));
+        }
+        
         
     }
     
 }
+
+setBossInactive2() {
+    // schauen ob noch boss elemente in der elementlist oder auf dem bildschirm sind
+
+    var bossFound = false;
+     for (let i = 0; i < this.elementList.length; i++) {
+        const el = this.elementList[i];
+        if (el instanceof RegenerateBoss || el instanceof SpawnerBoss || el instanceof SplitterBoss) {
+            bossFound = true;
+            break
+        }
+
+     }
+     this.bossActive = bossFound;
+}
+
 
 
 

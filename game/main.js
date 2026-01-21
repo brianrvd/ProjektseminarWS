@@ -29,6 +29,7 @@ window.onload = () => {
         InputField.saveWords(); 
         document.getElementById("main-menu").style.display = "none";
         document.getElementById("input-popup").style.display = "none";
+        myGame.audioManager.playSound('background')
         myGame.start();
     }
 
@@ -36,6 +37,7 @@ window.onload = () => {
     modeEnglishButton.onclick = () => {
         myGame.gameMode = 'english';
         document.getElementById("main-menu").style.display = "none";
+        myGame.audioManager.playSound('background')
         myGame.start();
     };
     
@@ -43,6 +45,7 @@ window.onload = () => {
     modeGermanButton.onclick = () => {
         myGame.gameMode = 'german';
         document.getElementById("main-menu").style.display = "none";
+        myGame.audioManager.playSound('background')
         myGame.start();
     };
     
