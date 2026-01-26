@@ -11,8 +11,15 @@ module.exports = class Burst extends Element {
         this.game = game
         this.x = x
         this.y = y
-        this.size = 15   
+        this.size = 15  
+
+        if (this.game && this.game.audioManager) {
+            this.game.audioManager.playSound('explosion')
+        }
         this.checkCollision()
+
+        
+        
     }
 
     draw(ctx) {

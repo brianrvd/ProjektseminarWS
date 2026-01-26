@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>TypeShooter – Tutorial</title>
+  <style>
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:#0f1b2a;
+      color:#eaf1ff;
+      line-height:1.5;
+    }
+    .wrap{
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 28px 18px;
+    }
+    .card{
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 14px;
+      padding: 18px;
+      margin: 14px 0;
+    }
+    h1{
+      margin: 0 0 10px 0;
+      font-size: 28px;
+      letter-spacing: 0.3px;
+    }
+    h2{
+      margin: 0 0 6px 0;
+      font-size: 18px;
+    }
+    p{ margin: 6px 0; opacity: 0.95; }
+    ul{ margin: 8px 0 0 18px; }
+    .btn{
+      display:inline-block;
+      margin-top: 14px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      text-decoration:none;
+      background:#2f9aa8;
+      color:white;
+      font-weight:600;
+    }
+    .hint{
+      opacity:0.85;
+      font-size: 14px;
+      margin-top: 8px;
+    }
+    .mode-name{
+      font-weight: 800;
+      color: #bfefff;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>TypeShooter – Tutorial</h1>
+
+    <div class="card">
+      <p>
+        Dieses Spiel hilft dir beim <b>Englisch lernen</b> und trainiert gleichzeitig deine
+        <b>Tippgeschwindigkeit</b>.
+        Du schießt Wörter, indem du sie schnell und korrekt eintippst.
+      </p>
+      <ul>
+        <li><b>Score</b> steigt mit jedem richtig getippten Wort</li>
+        <li><b>Herzen</b> sind deine Leben – du hast ingesamt 3 Leben, kolidiert ein Komet mit dem Planeten verlierst du ein Herz</li>
+        <li>Mit <b>Pause</b> kannst du kurz stoppen, und mit <b>Exit</b> gelangst du zurück ins Hauptmenü</li>
+      </ul>
+
+    </div>
+
+    <div class="card">
+      <h2><span class="mode-name">Modus 1: English Game</span></h2>
+      <p>
+        Du siehst englische Wörter und tippst genau dieses Wort ein.
+        Ziel: <b>Rechtschreibung</b> und <b>Tippgeschwindigkeit</b> verbessern.
+      </p>
+      <p class="hint">Beispiel: Anzeige „family“ → du tippst: <b>family</b></p>
+    </div>
+
+    <div class="card">
+      <h2><span class="mode-name">Modus 2: German → English</span></h2>
+      <p>
+        Du siehst ein <b>deutsches</b> Wort und musst die passende <b>englische Übersetzung</b> tippen.
+        Manche Wörter können <b>mehrere Bedeutungen</b> haben — dann reicht es, <b>eine</b> richtige Übersetzung einzutippen. (ist noch in bearbeitung)
+      </p>
+      <p class="hint">Beispiel: Anzeige „Bank“ → du tippst: <b>bank</b> oder <b>bench</b></p>
+    </div>
+
+    <div class="card">
+      <h2><span class="mode-name">Modus 3: Own Words</span></h2>
+      <p>
+        Du kannst deine <b>eigenen Wörter</b> verwenden (z. B. aus Uni, Arbeit, Vokabeln aus einem Thema der Schule).
+        So trainierst du das, was du gerade brauchst.
+      </p>
+      <p class="hint">Beispiel: Du tipst die Wörter ein → das Spiel nutzt diese Wörter</p>
+    </div>
+
+
+    <a class="btn" href="./index.html">Spiel starten</a>
+  </div>
+</body>
+</html>

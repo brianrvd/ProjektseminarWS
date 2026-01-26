@@ -19,6 +19,10 @@ module.exports = class Bullet extends Element {
         const dist = Math.hypot(dx, dy) || 1
         this.vx = (dx / dist) * 8
         this.vy = (dy / dist) * 8
+
+        if (this.game && this.game.audioManager) {
+            this.game.audioManager.playSound('laser')
+        }
     }
 
     draw(ctx) {

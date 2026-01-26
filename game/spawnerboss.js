@@ -11,13 +11,13 @@ module.exports = class SpawnerBoss extends RandomWalkCircleElement {
     /*constructor(game) {
         super(game)
         this.x = 300;
-        this.speed = 0.2
+        this.speed = 0.15
 
 
 
         
         this.spawn();
-        this.spawnInterval = 5000  // spawn every x seconds
+        this.spawnInterval = 11000  // spawn every x seconds
         this.lastSpawnTime = Date.now();
         
     }*/
@@ -78,13 +78,26 @@ module.exports = class SpawnerBoss extends RandomWalkCircleElement {
         for (let i = 0; i < 2; i++) {
             if(this.game.elementList) {
                 const minion = new RandomWalkCircleElement(this.game);
-                minion.x =  this.x + (i - 1) * 60; 
+                minion.x =  this.x + (i * 60 -30);; 
                 minion.y = this.y +10;
                 this.game.elementList.add(minion);
 
             }
         }
     }
-    
+     onCollision() {
+        this.game.setBossInactive();
+        this.hasCollided = true
+        this.game.elementList.delete(this.instanceId)
+        this.callBurst()
+        this.game.health.reduce()   
+    }
+
+    bulletMet(){
+        this.game.setBossInactive();
+        super.bulletMet();
+    }
+
+     
 
 }

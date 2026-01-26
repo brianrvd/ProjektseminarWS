@@ -24,6 +24,9 @@ module.exports = class RandomWalkCircleElement extends Element {
 
         this.bild = new Image();
         this.bild.src = this.selectRandomImage();
+        const baseSpeed = 0.7;
+        const speedIncrease = Math.floor(this.game.score / 5) * 0.075;
+        this.speed = Math.min(baseSpeed + speedIncrease, 100.0)
         
         setTimeout(() => { 
             let word = new Word(this.game, this.x, this.y, this.instanceId, this.speed)
