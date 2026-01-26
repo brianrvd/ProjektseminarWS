@@ -124,6 +124,7 @@ module.exports = class Game {
 
         document.getElementById("main-menu").style.display = "flex"
         document.getElementById("continue-button").style.display = "flex"
+        document.getElementById("exit-button").style.display = "flex"
         document.getElementById("mode-selection").style.display = "none";
     }
 
@@ -155,6 +156,7 @@ module.exports = class Game {
         document.getElementById("mode-selection").style.display = "none";
         document.getElementById("scoreblock").style.display = "flex";
         document.getElementById("scoreblock-value").textContent = this.score;
+        document.getElementById("menu-title").textContent="Game Over";
         this.health = new Health();                                    // leben wieder zurück setzen 
         this.score = 0;
         this.updateUI();
